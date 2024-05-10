@@ -1,13 +1,13 @@
+import React from 'react'
+import Header from './components/Header/Header';
+
 function App() {
   return (
-    <div className="App">
     <div>
-    <h1 className="text-4xl font-bold ">
-      Hello world!
-    </h1>
+      <Header />
+      
     </div>
-    </div>
-  );
+  )
 }
 
 export default App;
