@@ -1,11 +1,13 @@
 import React from 'react'
-import Header from './components/Header/Header';
+
+import Footer from './components/Footer/Footer';
+import BookCard from './components/Body/BookCard';
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
   return (
     <div>
-      <Header />
-      
+      <AppRoutes/>
     </div>
   )
 }
