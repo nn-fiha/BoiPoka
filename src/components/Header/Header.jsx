@@ -48,26 +48,26 @@ function Header() {
       <div class="bg-[#74a892] flex justify-center gap-20 items-center font-poppins h-12 text-white mb-20">
       
         <Dropdown label="Genre" options={genresOptions} />
-        <p>Best Sellers</p>
+        <button>Best Sellers</button>
         <Dropdown label="Writer" options={writersOptions} />
-        <p>Language</p>
+        <button>Language</button>
         <Dropdown label="Publisher" options={publishersOptions} />
-        <p>Price</p>
-        <p>Academic Books</p>
+        <button>Price</button>
+        <button>Academic Books</button>
         <div>
         <Link
             to={"/home/cart"}
 
           >
              <button
-            className="px-4 py-2 mr-3 bg-teal-700 text-white rounded hover:bg-teal-600 focus:outline-none focus:bg-blue-600"
+            className="px-4 py-2 mr-3 bg-teal-700 text-white rounded hover:bg-teal-600 "
           >
             <i class='bx bx-cart-add text-white text-xl '></i>
             </button>
           </Link>
 
           <button
-            className="px-4 py-2 bg-teal-700 text-white rounded hover:bg-teal-600 focus:outline-none focus:bg-blue-600"
+            className="px-4 py-2 bg-teal-700 text-white rounded hover:bg-teal-600 "
           >
            <i className='bx bx-heart text-white text-xl'></i>
           </button>
