@@ -2,4 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+:root {
+  --color-paper: 247 241 230;
+  --color-ink: 43 33 24;
+  --color-card: 255 255 255;
+  color-scheme: light;
+}
+
+/* Reading-lamp dark: warm browns instead of cold greys */
+.dark {
+  --color-paper: 24 19 15;
+  --color-ink: 236 227 211;
+  --color-card: 40 32 25;
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-paper text-ink font-poppins antialiased transition-colors duration-200;
+}
+
+/* Wooden plank the books stand on */
+.shelf-plank {
+  background: linear-gradient(180deg, #a9774a 0%, #8a5a33 45%, #5e3b1f 100%);
+  box-shadow: 0 10px 14px -6px rgba(60, 35, 15, 0.45);
+}
+
+.dark .shelf-plank {
+  background: linear-gradient(180deg, #8a5a33 0%, #6b4426 45%, #3f2714 100%);
+  box-shadow: 0 10px 18px -6px rgba(0, 0, 0, 0.7);
+}
+
+.spine-title {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Face-out display shelf ------------------------------------------------ */
+.display-panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0) 40%),
+    #8d80ee;
+}
+
+.dark .display-panel {
+  background:
+    linear-gradient(180deg, rgba(185, 176, 247, 0.12), rgba(185, 176, 247, 0) 40%),
+    #221d4d;
+}
+
+/* Soft spotlight falling from the top of the panel */
+.display-spotlight {
+  clip-path: polygon(32% 0, 68% 0, 100% 100%, 0 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0));
+}
+
+.dark .display-spotlight {
+  background: linear-gradient(180deg, rgba(255, 244, 214, 0.14), rgba(255, 244, 214, 0));
+}
+
+/* Cream back board and ledge the covers lean on */
+.display-board {
+  background: linear-gradient(180deg, #fbf1d6, #f3e3b8);
+}
+
+.display-ledge-top {
+  background: linear-gradient(180deg, #f6e8c2, #e9d6a3);
+}
+
+.display-ledge-front {
+  background: linear-gradient(180deg, #e7d39e, #cdb57a);
+  box-shadow: 0 14px 18px -8px rgba(40, 25, 90, 0.45);
+}
+
+.dark .display-board {
+  background: linear-gradient(180deg, #3a3150, #2e2742);
+}
+
+.dark .display-ledge-top {
+  background: linear-gradient(180deg, #5a4d6e, #4a3f5c);
+}
+
+.dark .display-ledge-front {
+  background: linear-gradient(180deg, #43385a, #2f2742);
+  box-shadow: 0 14px 18px -8px rgba(0, 0, 0, 0.7);
+}
