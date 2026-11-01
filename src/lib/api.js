@@ -148,3 +148,7 @@ export const fetchRelatedBooks = async (book) => {
   const seen = new Set(sameAuthor.map((b) => b.id));
   return { reason: sameAuthor.length ? "mixed" : "genre", books: [...sameAuthor, ...sameGenre.filter((b) => !seen.has(b.id))] };
 };
+
+// Only public profiles are visible, so a private account's name can still collide at sign-up
+export const isUsernameTaken = async (username) =>
+  Boolean(unwrap(await supabase.from("profiles").select("id").eq("username", username.toLowerCase()).maybeSingle()));

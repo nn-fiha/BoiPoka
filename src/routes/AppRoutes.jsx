@@ -8,6 +8,7 @@ import RequireAuth from "../components/RequireAuth";
 import ErrorBoundary from "../components/Common/ErrorBoundary";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
+import ResetPasswordPage from "../pages/ResetPasswordPage";
 import ShelfPage from "../pages/ShelfPage";
 import StatsPage from "../pages/StatsPage";
 import LibraryPage from "../pages/LibraryPage";
@@ -40,6 +41,7 @@ const AppRoutes = () => {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/u/:username" element={<ShelfPage />} />
               <Route path="/u/:username/stats" element={<StatsPage />} />

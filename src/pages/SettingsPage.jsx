@@ -3,12 +3,13 @@ import { usePageTitle } from "../hooks/usePageTitle";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 import { updateProfile } from "../lib/api";
+import NewPasswordForm from "../components/Auth/NewPasswordForm";
 
 const inputClass =
   "mt-1 w-full rounded-md border border-line bg-card px-3 py-2 font-bangla focus:outline-none focus:ring-2 focus:ring-terra/40";
 
 const SettingsPage = () => {
-  const { profile, setProfile } = useAuth();
+  const { user, profile, setProfile, updatePassword } = useAuth();
   const [form, setForm] = useState({
     display_name: profile?.display_name || "",
     bio: profile?.bio || "",
@@ -89,6 +90,22 @@ const SettingsPage = () => {
           Save
         </button>
       </form>
+
+      <section className="mt-14 border-t border-line pt-10">
+        <h2 className="font-serif text-2xl font-bold">Account</h2>
+        <p className="mt-1 text-sm text-ink/60">
+          Signed in as <span className="font-medium text-ink">{user?.email}</span>
+        </p>
+        <h3 className="mb-4 mt-8 font-medium">Change password</h3>
+        <NewPasswordForm
+          submitLabel="Update password"
+          onSubmit={async (password) => {
+            const result = await updatePassword(password);
+            if (!result.error) toast.success("Password updated");
+            return result;
+          }}
+        />
+      </section>
     </div>
   );
 };
