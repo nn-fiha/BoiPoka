@@ -29,7 +29,7 @@ const LibraryPage = () => {
       <section className="py-6 sm:py-10">
         <h1 className="font-serif text-3xl sm:text-5xl font-bold">The BoiPoka library</h1>
         <p className="mt-2 font-bangla text-base sm:text-lg text-ink/70">
-          {books.length} books readers have shelved so far — open one to see what people felt.
+          {books.length} Bangla and English books — open one to see what readers felt, or put it on your shelf.
         </p>
       </section>
       <BookshelfView
