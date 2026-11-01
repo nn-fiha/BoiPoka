@@ -47,21 +47,21 @@ const Divider = () => (
 );
 
 const LoginPage = () => {
-  const { user, signIn, signUp, sendPasswordReset, sendMagicLink, resendConfirmation, signInWithGoogle } = useAuth();
+  const { user, signIn, signUp, sendPasswordReset, resendConfirmation, signInWithGoogle } = useAuth();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const mode = ["signup", "forgot", "magic"].includes(searchParams.get("mode")) ? searchParams.get("mode") : "signin";
+  const mode = ["signup", "forgot"].includes(searchParams.get("mode")) ? searchParams.get("mode") : "signin";
 
   const [form, setForm] = useState({ email: "", password: "", username: "", displayName: "" });
   const [touched, setTouched] = useState({});
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
-  // After an email goes out: { kind: "confirm" | "reset" | "magic", email }
+  // After an email goes out: { kind: "confirm" | "reset", email }
   const [sent, setSent] = useState(null);
   const [cooldown, setCooldown] = useState(0);
   const [usernameStatus, setUsernameStatus] = useState(null);
 
-  usePageTitle({ signin: "Sign in", signup: "Create your shelf", forgot: "Reset password", magic: "Email sign-in link" }[mode]);
+  usePageTitle({ signin: "Sign in", signup: "Create your shelf", forgot: "Reset password" }[mode]);
 
   // Count down before another email can be requested
   useEffect(() => {
@@ -171,25 +171,11 @@ const LoginPage = () => {
     });
   };
 
-  const handleMagic = (e) => {
-    e.preventDefault();
-    run(["email"], async () => {
-      await unwrap(sendMagicLink(email));
-      setSent({ kind: "magic", email });
-      setCooldown(RESEND_COOLDOWN);
-    });
-  };
-
   const resend = async (target) => {
     setBusy(true);
     setError(null);
     try {
-      const action =
-        target.kind === "confirm"
-          ? resendConfirmation(target.email)
-          : target.kind === "reset"
-            ? sendPasswordReset(target.email)
-            : sendMagicLink(target.email);
+      const action = target.kind === "confirm" ? resendConfirmation(target.email) : sendPasswordReset(target.email);
       await unwrap(action);
       setCooldown(RESEND_COOLDOWN);
     } catch (err) {
@@ -212,7 +198,6 @@ const LoginPage = () => {
     const copy = {
       confirm: ["Confirm your email", "Tap the link we sent to finish creating your shelf."],
       reset: ["Check your inbox", "We sent a link to choose a new password. It expires in an hour."],
-      magic: ["Check your inbox", "Tap the link we sent to sign in — no password needed."],
     }[sent.kind];
 
     return (
@@ -300,23 +285,17 @@ const LoginPage = () => {
               <SubmitButton busy={busy}>Sign in</SubmitButton>
             </form>
 
-            <Divider />
-            <div className="space-y-3">
-              <button
-                onClick={() => switchMode("magic")}
-                className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-line font-medium transition hover:bg-card"
-              >
-                <i className="bx bx-mail-send text-lg"></i> Email me a sign-in link
-              </button>
-              {GOOGLE_ENABLED && (
+            {GOOGLE_ENABLED && (
+              <>
+                <Divider />
                 <button
                   onClick={handleGoogle}
                   className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-line font-medium transition hover:bg-card"
                 >
                   <i className="bx bxl-google text-xl"></i> Continue with Google
                 </button>
-              )}
-            </div>
+              </>
+            )}
 
             <p className="mt-8 text-center text-sm text-ink/70">
               New to BoiPoka?{" "}
@@ -421,20 +400,15 @@ const LoginPage = () => {
           </>
         )}
 
-        {(mode === "forgot" || mode === "magic") && (
+        {mode === "forgot" && (
           <>
             <button onClick={() => switchMode("signin")} className="mb-6 text-sm text-ink/60 hover:text-ink">
               <i className="bx bx-arrow-back align-middle"></i> Back to sign in
             </button>
-            <Heading
-              title={mode === "forgot" ? "Forgot your password?" : "Sign in with a link"}
-              bangla={mode === "forgot" ? "পাসওয়ার্ড ভুলে গেছ?" : null}
-            >
-              {mode === "forgot"
-                ? "Enter your email and we'll send you a link to choose a new one."
-                : "We'll email you a one-time link — no password needed."}
+            <Heading title="Forgot your password?" bangla="পাসওয়ার্ড ভুলে গেছ?">
+              Enter your email and we'll send you a link to choose a new one.
             </Heading>
-            <form onSubmit={mode === "forgot" ? handleForgot : handleMagic} noValidate className="space-y-4">
+            <form onSubmit={handleForgot} noValidate className="space-y-4">
               <Field
                 label="Email"
                 icon="bx-envelope"
@@ -449,7 +423,7 @@ const LoginPage = () => {
                 autoFocus
               />
               {error && <Alert>{friendlyAuthError(error)}</Alert>}
-              <SubmitButton busy={busy}>{mode === "forgot" ? "Send reset link" : "Email me a link"}</SubmitButton>
+              <SubmitButton busy={busy}>Send reset link</SubmitButton>
             </form>
           </>
         )}
