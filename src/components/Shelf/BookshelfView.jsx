@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import Shelf from "./Shelf";
 import CoverShelf from "./CoverShelf";
-import Modal from "../Common/Modal";
 import { STATUSES } from "../../context/ReadingContext";
 
 const GROUPINGS = {
@@ -36,7 +35,7 @@ const BookshelfView = ({
   const [tag, setTag] = useState(null);
   const [groupBy, setGroupBy] = useState("genre");
   const [view, setView] = useState(readView);
-  // Phones keep view, sort, shelves and tags in a bottom sheet so books show on the first screen
+  // Phones tuck view, sort, shelves and tags into a panel that opens under the search bar
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const chooseView = (next) => {
@@ -221,11 +220,15 @@ const BookshelfView = ({
             />
           </div>
           <button
-            onClick={() => setFiltersOpen(true)}
-            className="relative flex h-11 shrink-0 items-center gap-1.5 rounded-full border border-line bg-card px-4 text-sm font-medium sm:hidden"
+            onClick={() => setFiltersOpen((open) => !open)}
+            aria-expanded={filtersOpen}
+            aria-controls="shelf-filters"
+            className={`relative flex h-11 shrink-0 items-center gap-1.5 rounded-full border px-4 text-sm font-medium transition sm:hidden ${
+              filtersOpen ? "border-ink bg-ink text-paper" : "border-line bg-card"
+            }`}
             aria-label={`Filters${activeFilters ? ` (${activeFilters} active)` : ""}`}
           >
-            <i className="bx bx-slider-alt text-lg"></i> Filters
+            <i className={`bx ${filtersOpen ? "bx-x" : "bx-slider-alt"} text-lg`}></i> Filters
             {activeFilters > 0 && (
               <span className="absolute -right-1 -top-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-terra px-1 text-[11px] text-cream">
                 {activeFilters}
@@ -235,6 +238,87 @@ const BookshelfView = ({
           <div className="hidden items-center gap-2 sm:flex">
             {viewToggle}
             {sortSelect}
+          </div>
+        </div>
+
+        {/* Phones: filter panel that slides open under the search bar */}
+        <div
+          id="shelf-filters"
+          className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out sm:hidden ${
+            filtersOpen ? "grid-rows-[1fr] opacity-100" : "pointer-events-none !mt-0 grid-rows-[0fr] opacity-0"
+          }`}
+          aria-hidden={!filtersOpen}
+        >
+          <div className="overflow-hidden">
+            <div className="space-y-4 rounded-2xl border border-line bg-card p-4">
+              <section>
+                <h3 className="mb-2 text-[11px] font-medium uppercase tracking-wide text-ink/60">Shelf style</h3>
+                {viewToggle}
+              </section>
+              <section>
+                <h3 className="mb-2 text-[11px] font-medium uppercase tracking-wide text-ink/60">Shelve by</h3>
+                <div className="flex gap-2">
+                  {[
+                    ["genre", "Genre"],
+                    ["author", "Author"],
+                  ].map(([key, label]) => (
+                    <button
+                      key={key}
+                      onClick={() => setGroupBy(key)}
+                      aria-pressed={groupBy === key}
+                      className={`h-10 flex-1 rounded-full border text-sm transition ${
+                        groupBy === key ? "border-ink bg-ink text-paper" : "border-line"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </section>
+              {collections.length > 0 && (
+                <section>
+                  <h3 className="mb-2 text-[11px] font-medium uppercase tracking-wide text-ink/60">My shelves</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {[{ id: "all", name: "All books", entryIds: items.map(({ entry }) => entry.id) }, ...collections].map((c) => (
+                      <button
+                        key={c.id}
+                        onClick={() => setCollectionId(c.id)}
+                        aria-pressed={collectionId === c.id}
+                        className={`rounded-full border px-3.5 py-2 text-sm transition ${
+                          collectionId === c.id ? "border-sage bg-sage text-white" : "border-line"
+                        }`}
+                      >
+                        {c.name} <span className="opacity-70">{c.entryIds.length}</span>
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              )}
+              {allTags.length > 0 && (
+                <section>
+                  <h3 className="mb-2 text-[11px] font-medium uppercase tracking-wide text-ink/60">Tags</h3>
+                  {tagChips}
+                </section>
+              )}
+              {extraActions && <section>{extraActions({ status })}</section>}
+              <div className="flex items-center justify-between border-t border-line pt-3 text-sm">
+                <span className="text-ink/60">
+                  {visibleItems.length} {visibleItems.length === 1 ? "book" : "books"}
+                </span>
+                {activeFilters > 0 && (
+                  <button
+                    onClick={() => {
+                      setCollectionId("all");
+                      setTag(null);
+                      setGroupBy("genre");
+                    }}
+                    className="-my-2 py-2 font-medium text-terra"
+                  >
+                    Reset filters
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -263,67 +347,6 @@ const BookshelfView = ({
         )}
       </div>
 
-      <Modal open={filtersOpen} onClose={() => setFiltersOpen(false)} title="Filters">
-        <h2 className="pr-10 font-serif text-2xl font-bold">Filters</h2>
-        <div className="mt-6 space-y-6">
-          <section>
-            <h3 className="mb-2 text-xs font-medium uppercase tracking-wide text-ink/60">Shelf style</h3>
-            {viewToggle}
-          </section>
-          <section>
-            <h3 className="mb-2 text-xs font-medium uppercase tracking-wide text-ink/60">Shelve by</h3>
-            <div className="flex gap-2">
-              {[
-                ["genre", "Genre"],
-                ["author", "Author"],
-              ].map(([key, label]) => (
-                <button
-                  key={key}
-                  onClick={() => setGroupBy(key)}
-                  aria-pressed={groupBy === key}
-                  className={`h-11 flex-1 rounded-full border text-sm transition ${
-                    groupBy === key ? "border-ink bg-ink text-paper" : "border-line"
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </section>
-          {collections.length > 0 && (
-            <section>
-              <h3 className="mb-2 text-xs font-medium uppercase tracking-wide text-ink/60">My shelves</h3>
-              <div className="flex flex-wrap gap-2">
-                {[{ id: "all", name: "All books", entryIds: items.map(({ entry }) => entry.id) }, ...collections].map((c) => (
-                  <button
-                    key={c.id}
-                    onClick={() => setCollectionId(c.id)}
-                    aria-pressed={collectionId === c.id}
-                    className={`rounded-full border px-4 py-2 text-sm transition ${
-                      collectionId === c.id ? "border-sage bg-sage text-white" : "border-line"
-                    }`}
-                  >
-                    {c.name} <span className="opacity-70">{c.entryIds.length}</span>
-                  </button>
-                ))}
-              </div>
-            </section>
-          )}
-          {allTags.length > 0 && (
-            <section>
-              <h3 className="mb-2 text-xs font-medium uppercase tracking-wide text-ink/60">Tags</h3>
-              {tagChips}
-            </section>
-          )}
-          {extraActions && <section>{extraActions({ status })}</section>}
-        </div>
-        <button
-          onClick={() => setFiltersOpen(false)}
-          className="mt-8 h-12 w-full rounded-xl bg-terra font-medium text-cream hover:bg-terra-dark"
-        >
-          Show {visibleItems.length} {visibleItems.length === 1 ? "book" : "books"}
-        </button>
-      </Modal>
 
       {shelves.length === 0 ? (
         <p className="py-20 text-center text-ink/60">No books match that. Try another search.</p>
