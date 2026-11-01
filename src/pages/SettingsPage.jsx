@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 import { updateProfile } from "../lib/api";
 import NewPasswordForm from "../components/Auth/NewPasswordForm";
+import VisibilityPicker, { visibilityChanges, visibilityOf } from "../components/Share/VisibilityPicker";
 
 const inputClass =
   "mt-1 w-full rounded-md border border-line bg-card px-3 py-2 font-bangla focus:outline-none focus:ring-2 focus:ring-terra/40";
@@ -13,7 +14,7 @@ const SettingsPage = () => {
   const [form, setForm] = useState({
     display_name: profile?.display_name || "",
     bio: profile?.bio || "",
-    is_public: profile?.is_public ?? true,
+    visibility: visibilityOf(profile),
     research_consent: profile?.research_consent ?? false,
   });
   const [busy, setBusy] = useState(false);
@@ -25,7 +26,8 @@ const SettingsPage = () => {
     e.preventDefault();
     setBusy(true);
     try {
-      setProfile(await updateProfile(profile.id, form));
+      const { visibility, ...fields } = form;
+      setProfile(await updateProfile(profile.id, { ...fields, ...visibilityChanges(visibility) }));
       toast.success("Settings saved");
     } catch (error) {
       toast.error(error.message);
@@ -55,20 +57,11 @@ const SettingsPage = () => {
           />
         </label>
 
-        <label className="flex gap-3 rounded-lg border border-line bg-card/60 p-4">
-          <input
-            type="checkbox"
-            checked={form.is_public}
-            onChange={(e) => setForm({ ...form, is_public: e.target.checked })}
-            className="mt-1 h-4 w-4 accent-terra"
-          />
-          <span>
-            <span className="font-medium">Public shelf</span>
-            <span className="block text-sm text-ink/60">
-              Anyone can see your shelf and your notes on book pages. Turn off to keep everything private.
-            </span>
-          </span>
-        </label>
+        <div>
+          <div className="mb-2 text-sm font-medium">Who can see your shelf</div>
+          <VisibilityPicker value={form.visibility} onChange={(visibility) => setForm({ ...form, visibility })} />
+          <p className="mt-2 text-xs text-ink/50">Get your share link from the Share button on your shelf.</p>
+        </div>
 
         <label className="flex gap-3 rounded-lg border border-line bg-card/60 p-4">
           <input

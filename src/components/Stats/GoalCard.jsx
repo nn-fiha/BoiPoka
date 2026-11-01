@@ -7,13 +7,24 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 // Yearly reading goal with a progress ring; editable on your own shelf
 // undatedCount: read books with no finish date, which can't count towards any year
-const GoalCard = ({ ownerId, year, finishedCount, editable, compact = false, undatedCount = 0, onDateUndated }) => {
-  const [goal, setGoal] = useState(undefined);
+// initialGoal skips the lookup when the goal is already known (shared shelves)
+const GoalCard = ({
+  ownerId,
+  year,
+  finishedCount,
+  editable,
+  compact = false,
+  undatedCount = 0,
+  onDateUndated,
+  initialGoal,
+}) => {
+  const [goal, setGoal] = useState(initialGoal);
   const [editing, setEditing] = useState(false);
   const [target, setTarget] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
+    if (initialGoal !== undefined) return undefined;
     let cancelled = false;
     setGoal(undefined);
     fetchGoal(ownerId, year)
@@ -23,7 +34,7 @@ const GoalCard = ({ ownerId, year, finishedCount, editable, compact = false, und
     return () => {
       cancelled = true;
     };
-  }, [ownerId, year]);
+  }, [ownerId, year, initialGoal]);
 
   if (goal === undefined) return null;
   if (!goal && !editable) return null;

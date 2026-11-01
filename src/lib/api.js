@@ -152,3 +152,10 @@ export const fetchRelatedBooks = async (book) => {
 // Only public profiles are visible, so a private account's name can still collide at sign-up
 export const isUsernameTaken = async (username) =>
   Boolean(unwrap(await supabase.from("profiles").select("id").eq("username", username.toLowerCase()).maybeSingle()));
+
+// Shared shelves ------------------------------------------------------------
+
+// A shelf opened through someone's share link (works for link-only shelves too)
+export const fetchSharedShelf = async (token) => unwrap(await supabase.rpc("shared_shelf", { token }));
+
+export const shareUrl = (token) => `${window.location.origin}/s/${token}`;

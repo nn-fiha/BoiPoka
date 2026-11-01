@@ -11,6 +11,7 @@ import LoginPage from "../pages/LoginPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import ShelfPage from "../pages/ShelfPage";
 import StatsPage from "../pages/StatsPage";
+import SharedShelfPage from "../pages/SharedShelfPage";
 import LibraryPage from "../pages/LibraryPage";
 import BookPage from "../pages/BookPage";
 import AddBookPage from "../pages/AddBookPage";
@@ -45,6 +46,7 @@ const AppRoutes = () => {
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/u/:username" element={<ShelfPage />} />
               <Route path="/u/:username/stats" element={<StatsPage />} />
+              <Route path="/s/:token" element={<SharedShelfPage />} />
               <Route path="/book/:id" element={<BookPage />} />
               <Route path="/add" element={<RequireAuth><AddBookPage /></RequireAuth>} />
               <Route path="/settings" element={<RequireAuth><SettingsPage /></RequireAuth>} />
