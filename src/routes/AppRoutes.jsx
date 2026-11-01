@@ -45,7 +45,8 @@ const AppRoutes = () => {
     <Router>
       <div className={`min-h-screen flex flex-col ${profile ? "pb-[calc(4rem+env(safe-area-inset-bottom))] sm:pb-0" : ""}`}>
         <Header />
-        <main className="flex flex-1 flex-col">
+        {/* Pages fill the width exactly; without w-full a centred page would grow to fit its widest shelf */}
+        <main className="flex flex-1 flex-col [&>*]:w-full [&>*]:min-w-0">
           <PageBoundary>
             <Routes>
               <Route path="/" element={<HomePage />} />
