@@ -1,3 +1,11 @@
-# https://www.robotstxt.org/robotstxt.html
+# BoiPoka
 User-agent: *
-Disallow:
+Allow: /
+# Private and account pages have nothing useful for search engines
+Disallow: /settings
+Disallow: /add
+Disallow: /reset-password
+# Share links are meant for friends, not search results
+Disallow: /s/
+
+Sitemap: https://boi-poka.vercel.app/sitemap.xml

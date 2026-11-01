@@ -18,7 +18,7 @@ const SettingsPage = () => {
     research_consent: profile?.research_consent ?? false,
   });
   const [busy, setBusy] = useState(false);
-  usePageTitle("Settings");
+  usePageTitle("Settings", { noindex: true });
 
   if (!profile) return <p className="py-24 text-center text-ink/60">Loading…</p>;
 

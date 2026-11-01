@@ -37,7 +37,7 @@ const AddBookPage = () => {
   const { user } = useAuth();
   const { getEntry, addToShelf } = useReading();
   const navigate = useNavigate();
-  usePageTitle("Add a book");
+  usePageTitle("Add a book", { noindex: true });
   const [query, setQuery] = useState("");
   const [catalogResults, setCatalogResults] = useState([]);
   const [openLibraryResults, setOpenLibraryResults] = useState([]);

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useShelf } from "../hooks/useShelf";
 import { useReading } from "../context/ReadingContext";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { usePageMeta } from "../hooks/usePageTitle";
 import { finishedInYear } from "../lib/stats";
 import BookshelfView from "../components/Shelf/BookshelfView";
 import GoalCard from "../components/Stats/GoalCard";
@@ -19,7 +19,14 @@ const ShelfPage = () => {
   const [sharing, setSharing] = useState(false);
   const ownerName = owner?.display_name || owner?.username;
 
-  usePageTitle(owner ? (isMine ? "My bookshelf" : `${ownerName}'s bookshelf`) : null);
+  const readCount = items.filter(({ entry }) => entry.status === "read").length;
+  usePageMeta({
+    title: owner ? (isMine ? "My bookshelf" : `${ownerName}'s bookshelf`) : null,
+    description: owner
+      ? `${ownerName}'s bookshelf on BoiPoka — ${readCount} ${readCount === 1 ? "book" : "books"} read, with ratings, notes and favourite quotes.`
+      : null,
+    image: items.find(({ book }) => book.cover_url)?.book.cover_url,
+  });
 
   if (status === "missing") {
     return (

@@ -11,7 +11,7 @@ import ConfirmDialog from "../components/Common/ConfirmDialog";
 import BookCover from "../components/Shelf/BookCover";
 import BookDetailsForm from "../components/Journal/BookDetailsForm";
 import { BookSkeleton } from "../components/Common/Skeleton";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { usePageMeta } from "../hooks/usePageTitle";
 
 const BookPage = () => {
   const { id } = useParams();
@@ -23,7 +23,15 @@ const BookPage = () => {
   const [editing, setEditing] = useState(false);
   const [confirmingRemove, setConfirmingRemove] = useState(false);
 
-  usePageTitle(book ? `${book.title} — ${book.author}` : null);
+  usePageMeta({
+    title: book ? `${book.title} — ${book.author}` : null,
+    description: book
+      ? `${book.title} by ${book.author}${book.genre ? ` · ${book.genre}` : ""}${
+          book.pages ? ` · ${book.pages} pages` : ""
+        }. Read reviews, moods and favourite quotes from BoiPoka readers.`
+      : null,
+    image: book?.cover_url,
+  });
 
   useEffect(() => {
     let cancelled = false;

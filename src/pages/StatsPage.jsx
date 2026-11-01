@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useShelf } from "../hooks/useShelf";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { usePageMeta } from "../hooks/usePageTitle";
 import { availableYears, computeStats } from "../lib/stats";
 import { ShelfSkeleton } from "../components/Common/Skeleton";
 import GoalCard from "../components/Stats/GoalCard";
@@ -24,7 +24,12 @@ const StatsPage = () => {
   const [year, setYear] = useState(new Date().getFullYear());
   const stats = useMemo(() => computeStats(items, year), [items, year]);
 
-  usePageTitle(owner ? `${isMine ? "My" : `${owner.display_name || owner.username}'s`} reading stats` : "Reading stats");
+  usePageMeta({
+    title: owner ? `${isMine ? "My" : `${owner.display_name || owner.username}'s`} reading stats` : "Reading stats",
+    description: owner
+      ? `${owner.display_name || owner.username}'s reading in ${year}: ${stats.finished.length} books, ${stats.pages.toLocaleString()} pages, favourite genres and authors.`
+      : null,
+  });
 
   useEffect(() => {
     if (!years.includes(year)) setYear(years[0]);

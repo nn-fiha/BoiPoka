@@ -26,7 +26,8 @@ const SharedShelfPage = () => {
 
   const owner = shelf?.profile;
   const name = owner?.display_name || owner?.username;
-  usePageTitle(owner ? `${name}'s bookshelf` : "Shared bookshelf");
+  // Share links are for friends, so keep them out of search results
+  usePageTitle(owner ? `${name}'s bookshelf` : "Shared bookshelf", { noindex: true });
 
   if (shelf === undefined) return <ShelfSkeleton />;
 

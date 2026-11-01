@@ -25,3 +25,6 @@ yarn-error.log*
 # vite
 /dist
 .env
+
+# generated at build time
+/public/sitemap.xml
