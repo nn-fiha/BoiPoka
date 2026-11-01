@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import { fetchCatalog } from "../lib/api";
 import { useReading } from "../context/ReadingContext";
 import BookshelfView from "../components/Shelf/BookshelfView";
+import { ShelfSkeleton } from "../components/Common/Skeleton";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 // Every book anyone has added to BoiPoka
 const LibraryPage = () => {
   const { getEntry } = useReading();
   const [books, setBooks] = useState(null);
+  usePageTitle("Library");
 
   useEffect(() => {
     fetchCatalog().then(setBooks).catch(() => setBooks([]));
   }, []);
 
-  if (!books) return <p className="py-24 text-center text-ink/60">Opening the library…</p>;
+  if (!books) return <ShelfSkeleton />;
 
   // Books on your own shelf show their status and rating
   const items = books.map((book) => ({ book, entry: getEntry(book.id) || { status: "read", rating: 0 } }));

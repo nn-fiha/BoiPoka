@@ -1,13 +1,20 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { supabase } from "../lib/supabase";
-import { fetchShelf } from "../lib/api";
+import {
+  addToCollection,
+  createCollection,
+  deleteCollection,
+  fetchCollections,
+  fetchShelf,
+  removeFromCollection,
+} from "../lib/api";
 import { useAuth } from "./AuthContext";
 
 export const STATUSES = {
-  read: { label: "Read", bangla: "পড়া শেষ", color: "bg-emerald-700" },
-  reading: { label: "Reading", bangla: "পড়ছি", color: "bg-amber-600" },
-  want: { label: "Want to read", bangla: "পড়তে চাই", color: "bg-sky-700" },
+  read: { label: "Read", short: "Read", bangla: "পড়া শেষ", color: "bg-emerald-700" },
+  reading: { label: "Reading", short: "Reading", bangla: "পড়ছি", color: "bg-amber-600" },
+  want: { label: "Want to read", short: "Want", bangla: "পড়তে চাই", color: "bg-sky-700" },
 };
 
 export const MOODS = [
@@ -19,7 +26,7 @@ export const MOODS = [
   "Re-read worthy",
 ];
 
-const EDITABLE_FIELDS = ["status", "started_at", "finished_at", "rating", "moods", "review", "quotes"];
+const EDITABLE_FIELDS = ["status", "started_at", "finished_at", "rating", "moods", "review", "quotes", "current_page", "tags"];
 const SAVE_DELAY_MS = 600;
 
 const ReadingContext = createContext(null);
@@ -28,6 +35,7 @@ const ReadingContext = createContext(null);
 export const ReadingProvider = ({ children }) => {
   const { user } = useAuth();
   const [entries, setEntries] = useState({});
+  const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(false);
   const pendingSaves = useRef({});
   // Mirrors `entries` so quick successive edits build on each other
@@ -39,12 +47,15 @@ export const ReadingProvider = ({ children }) => {
   const reload = useCallback(async () => {
     if (!user) {
       setEntries({});
+      setCollections([]);
       return;
     }
     setLoading(true);
     try {
       const rows = await fetchShelf(user.id);
       setEntries(Object.fromEntries(rows.map((row) => [row.book_id, row])));
+      // Custom shelves need migration 004; the rest of the shelf works without it
+      setCollections(await fetchCollections(user.id).catch(() => []));
     } catch (error) {
       toast.error(`Couldn't load your shelf: ${error.message}`);
     } finally {
@@ -99,13 +110,62 @@ export const ReadingProvider = ({ children }) => {
     setEntries(({ [bookId]: _removed, ...rest }) => rest);
   };
 
+  // Custom shelves ----------------------------------------------------------
+
+  const newCollection = async (name) => {
+    try {
+      const collection = await createCollection(name.trim());
+      setCollections((current) => [...current, collection]);
+      return collection;
+    } catch (error) {
+      toast.error(error.code === "23505" ? "You already have a shelf with that name" : error.message);
+      return null;
+    }
+  };
+
+  const removeCollection = async (id) => {
+    try {
+      await deleteCollection(id);
+      setCollections((current) => current.filter((collection) => collection.id !== id));
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const toggleInCollection = async (collectionId, entryId) => {
+    const collection = collections.find((c) => c.id === collectionId);
+    const isIn = collection.entryIds.includes(entryId);
+    const update = (ids) =>
+      setCollections((current) => current.map((c) => (c.id === collectionId ? { ...c, entryIds: ids(c.entryIds) } : c)));
+    update((ids) => (isIn ? ids.filter((id) => id !== entryId) : [...ids, entryId]));
+    try {
+      await (isIn ? removeFromCollection(collectionId, entryId) : addToCollection(collectionId, entryId));
+    } catch (error) {
+      update((ids) => (isIn ? [...ids, entryId] : ids.filter((id) => id !== entryId)));
+      toast.error(error.message);
+    }
+  };
+
   // Refresh the embedded book after its catalog details are edited
   const syncBook = (book) =>
     setEntries((current) => (current[book.id] ? { ...current, [book.id]: { ...current[book.id], book } } : current));
 
   return (
     <ReadingContext.Provider
-      value={{ entries, loading, getEntry, updateEntry, addToShelf, removeFromShelf, syncBook, reload }}
+      value={{
+        entries,
+        loading,
+        getEntry,
+        updateEntry,
+        addToShelf,
+        removeFromShelf,
+        syncBook,
+        reload,
+        collections,
+        newCollection,
+        removeCollection,
+        toggleInCollection,
+      }}
     >
       {children}
     </ReadingContext.Provider>

@@ -3,17 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --color-paper: 247 241 230;
-  --color-ink: 43 33 24;
+  --color-paper: 247 245 239;
+  --color-ink: 42 42 38;
   --color-card: 255 255 255;
+  --color-line: 217 212 196;
   color-scheme: light;
 }
 
-/* Reading-lamp dark: warm browns instead of cold greys */
+/* Forest-night dark: deep greens instead of cold greys */
 .dark {
-  --color-paper: 24 19 15;
-  --color-ink: 236 227 211;
-  --color-card: 40 32 25;
+  --color-paper: 22 26 23;
+  --color-ink: 233 230 220;
+  --color-card: 32 38 33;
+  --color-line: 57 68 59;
   color-scheme: dark;
 }
 
@@ -40,14 +42,14 @@ body {
 /* Face-out display shelf ------------------------------------------------ */
 .display-panel {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0) 40%),
-    #8d80ee;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 40%),
+    #8fae9b;
 }
 
 .dark .display-panel {
   background:
-    linear-gradient(180deg, rgba(185, 176, 247, 0.12), rgba(185, 176, 247, 0) 40%),
-    #221d4d;
+    linear-gradient(180deg, rgba(233, 230, 220, 0.08), rgba(233, 230, 220, 0) 40%),
+    #26332b;
 }
 
 /* Soft spotlight falling from the top of the panel */
@@ -57,32 +59,70 @@ body {
 }
 
 .dark .display-spotlight {
-  background: linear-gradient(180deg, rgba(255, 244, 214, 0.14), rgba(255, 244, 214, 0));
+  background: linear-gradient(180deg, rgba(255, 236, 205, 0.12), rgba(255, 236, 205, 0));
 }
 
-/* Cream back board and ledge the covers lean on */
+/* Oat back board and ledge the covers lean on */
 .display-board {
-  background: linear-gradient(180deg, #fbf1d6, #f3e3b8);
+  background: linear-gradient(180deg, #f8f1e2, #f0e5cc);
 }
 
 .display-ledge-top {
-  background: linear-gradient(180deg, #f6e8c2, #e9d6a3);
+  background: linear-gradient(180deg, #f3e9d3, #e8d9b8);
 }
 
 .display-ledge-front {
-  background: linear-gradient(180deg, #e7d39e, #cdb57a);
-  box-shadow: 0 14px 18px -8px rgba(40, 25, 90, 0.45);
+  background: linear-gradient(180deg, #e3d3b0, #c9b48a);
+  box-shadow: 0 14px 18px -8px rgba(30, 50, 38, 0.4);
 }
 
 .dark .display-board {
-  background: linear-gradient(180deg, #3a3150, #2e2742);
+  background: linear-gradient(180deg, #34413a, #2b362f);
 }
 
 .dark .display-ledge-top {
-  background: linear-gradient(180deg, #5a4d6e, #4a3f5c);
+  background: linear-gradient(180deg, #55625a, #46524a);
 }
 
 .dark .display-ledge-front {
-  background: linear-gradient(180deg, #43385a, #2f2742);
+  background: linear-gradient(180deg, #3c4840, #2a332d);
   box-shadow: 0 14px 18px -8px rgba(0, 0, 0, 0.7);
+}
+
+/* Toast notifications: small paper cards that match the site --------------- */
+.Toastify .Toastify__toast-container {
+  --toastify-toast-width: 340px;
+  --toastify-font-family: Poppins, "Hind Siliguri", sans-serif;
+}
+
+.Toastify .Toastify__toast {
+  min-height: 0;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgb(var(--color-line));
+  border-radius: 1rem;
+  background: rgb(var(--color-card));
+  color: rgb(var(--color-ink));
+  font-size: 0.875rem;
+  box-shadow: 0 12px 32px -12px rgba(20, 30, 24, 0.35);
+}
+
+.Toastify .Toastify__toast--error {
+  border-color: rgb(239 68 68 / 0.35);
+}
+
+.Toastify .Toastify__toast-icon {
+  width: auto;
+  margin-inline-end: 0.625rem;
+}
+
+/* Phones: float above the bottom tab bar instead of hugging the screen edge */
+@media (max-width: 480px) {
+  .Toastify .Toastify__toast-container--bottom-right {
+    left: 1rem;
+    right: 1rem;
+    bottom: calc(4.5rem + env(safe-area-inset-bottom));
+    width: auto;
+    padding: 0;
+  }
 }

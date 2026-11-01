@@ -1,5 +1,5 @@
 import React from "react";
-import { ToastContainer } from "react-toastify";
+import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AppRoutes from "./routes/AppRoutes";
 import SetupNeeded from "./components/SetupNeeded";
@@ -10,7 +10,28 @@ import { isConfigured } from "./lib/supabase";
 
 const ThemedToasts = () => {
   const { theme } = useTheme();
-  return <ToastContainer position="bottom-right" autoClose={1800} theme={theme} />;
+  return (
+    <ToastContainer
+      position="bottom-right"
+      autoClose={2200}
+      hideProgressBar
+      closeOnClick
+      pauseOnFocusLoss={false}
+      draggable
+      newestOnTop
+      limit={3}
+      transition={Slide}
+      theme={theme}
+      closeButton={false}
+      icon={({ type }) => (
+        <i
+          className={`bx ${
+            type === "error" ? "bx-error-circle text-red-500" : type === "success" ? "bx-check-circle text-sage" : "bx-info-circle text-terra"
+          } text-xl`}
+        ></i>
+      )}
+    />
+  );
 };
 
 function App() {
