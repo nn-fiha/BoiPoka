@@ -15,6 +15,10 @@ const FaceOutBook = ({ book, entry }) => {
       className="group relative shrink-0 w-[6.5rem] sm:w-36 snap-start focus:outline-none"
       title={`${book.title} — ${book.author}`}
     >
+      <span
+        aria-hidden="true"
+        className="book-contact-shadow pointer-events-none absolute -bottom-1.5 left-1 right-1 h-3 transition duration-300 group-hover:scale-x-75 group-hover:opacity-50"
+      />
       <div className="relative transition duration-300 ease-out group-hover:-translate-y-3 group-hover:-rotate-1 group-focus-visible:-translate-y-3">
         <BookCover
           book={book}
@@ -45,7 +49,8 @@ const FaceOutBook = ({ book, entry }) => {
   );
 };
 
-// One cream ledge of face-out covers, scrolling sideways when it overflows
+// One shelf of face-out covers, drawn in 3D: recessed back wall, ledge and front edge.
+// Scrolls sideways when the books overflow.
 const CoverShelf = ({ label, items }) => (
   <section className="relative">
     <div className="flex items-baseline justify-between px-3 sm:px-1 mb-2 text-white/90">
@@ -55,16 +60,18 @@ const CoverShelf = ({ label, items }) => (
       </span>
     </div>
     <div className="relative">
-      {/* Back board */}
-      <div className="display-board absolute inset-x-3 sm:inset-x-6 top-10 bottom-5 rounded-t-sm" />
-      <div className="relative flex items-end gap-4 sm:gap-10 overflow-x-auto overflow-y-visible px-5 sm:px-12 snap-x pt-6 pb-0">
+      {/* Back wall ends where the ledge's top surface begins */}
+      <div className="display-board absolute inset-x-3 top-8 bottom-9 sm:inset-x-6" />
+
+      {/* Books sit partway into the ledge's depth, so they rest on it rather than float above */}
+      <div className="relative z-10 -mb-5 flex snap-x items-end gap-4 overflow-x-auto px-5 pb-2 pt-6 sm:gap-10 sm:px-12">
         {items.map(({ book, entry }) => (
           <FaceOutBook key={book.id} book={book} entry={entry} />
         ))}
       </div>
-      {/* Ledge: top surface and front edge */}
-      <div className="display-ledge-top relative h-3 mx-0 [clip-path:polygon(2%_0,98%_0,100%_100%,0_100%)]" />
-      <div className="display-ledge-front relative h-4 rounded-b-sm" />
+
+      <div className="display-ledge-top relative h-5" />
+      <div className="display-ledge-front relative h-4 rounded-b-[3px]" />
     </div>
   </section>
 );

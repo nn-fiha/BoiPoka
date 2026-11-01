@@ -30,6 +30,14 @@ const NotFound = () => (
   </div>
 );
 
+// Sign-in screens fill the page edge to edge, so they skip the footer
+const AUTH_PATHS = ["/login", "/reset-password"];
+
+const PageFooter = () => {
+  const { pathname } = useLocation();
+  return AUTH_PATHS.includes(pathname) ? null : <Footer />;
+};
+
 const AppRoutes = () => {
   const { profile } = useAuth();
 
@@ -37,7 +45,7 @@ const AppRoutes = () => {
     <Router>
       <div className={`min-h-screen flex flex-col ${profile ? "pb-[calc(4rem+env(safe-area-inset-bottom))] sm:pb-0" : ""}`}>
         <Header />
-        <main className="flex-1">
+        <main className="flex flex-1 flex-col">
           <PageBoundary>
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -54,7 +62,7 @@ const AppRoutes = () => {
             </Routes>
           </PageBoundary>
         </main>
-        <Footer />
+        <PageFooter />
         <MobileNav />
       </div>
     </Router>
