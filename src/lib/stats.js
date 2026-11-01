@@ -51,3 +51,41 @@ export const computeStats = (items, year) => {
     undated: read.filter(({ entry }) => !entry.finished_at).length,
   };
 };
+
+// Everything the yearly wrap-up card shows
+export const computeWrap = (items, year) => {
+  const stats = computeStats(items, year);
+  const { finished } = stats;
+  const byRating = [...finished].sort((a, b) => (b.entry.rating || 0) - (a.entry.rating || 0));
+
+  // A favourite line from the best-loved book that has one, short enough to fit on the card
+  const quote = byRating
+    .flatMap(({ book, entry }) => (entry.quotes || []).map((q) => ({ text: q.text?.trim(), book })))
+    .filter((q) => q.text)
+    .sort((a, b) => (a.text.length > 220) - (b.text.length > 220))[0];
+
+  const busiest = stats.perMonth.reduce((best, books, month) => (books.length > best.count ? { month, count: books.length } : best), {
+    month: null,
+    count: 0,
+  });
+
+  return {
+    year,
+    books: finished.length,
+    pages: stats.pages,
+    averageRating: stats.averageRating,
+    authors: stats.authors.slice(0, 3),
+    genre: stats.genres[0]?.label || null,
+    mood: countBy(
+      finished.flatMap(({ entry }) => entry.moods || []).map((label) => ({ label })),
+      (m) => m.label
+    )[0]?.label,
+    busiestMonth: busiest.count > 1 ? `${MONTHS[busiest.month]} · ${busiest.count} books` : null,
+    // Favourites first, then the rest from most recently finished
+    covers: [...byRating.filter(({ entry }) => entry.rating > 0), ...[...finished].sort((a, b) => b.entry.finished_at.localeCompare(a.entry.finished_at))]
+      .filter((item, index, list) => list.indexOf(item) === index)
+      .slice(0, 5)
+      .map(({ book }) => book),
+    quote,
+  };
+};
