@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useShelf } from "../hooks/useShelf";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { usePageMeta } from "../hooks/usePageTitle";
 import { availableYears, computeStats } from "../lib/stats";
 import { ShelfSkeleton } from "../components/Common/Skeleton";
 import GoalCard from "../components/Stats/GoalCard";
@@ -24,7 +24,12 @@ const StatsPage = () => {
   const [year, setYear] = useState(new Date().getFullYear());
   const stats = useMemo(() => computeStats(items, year), [items, year]);
 
-  usePageTitle(owner ? `${isMine ? "My" : `${owner.display_name || owner.username}'s`} reading stats` : "Reading stats");
+  usePageMeta({
+    title: owner ? `${isMine ? "My" : `${owner.display_name || owner.username}'s`} reading stats` : "Reading stats",
+    description: owner
+      ? `${owner.display_name || owner.username}'s reading in ${year}: ${stats.finished.length} books, ${stats.pages.toLocaleString()} pages, favourite genres and authors.`
+      : null,
+  });
 
   useEffect(() => {
     if (!years.includes(year)) setYear(years[0]);
@@ -44,7 +49,7 @@ const StatsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
-      <Link to={`/u/${owner.username}`} className="text-sm text-ink/60 hover:text-ink">
+      <Link to={`/u/${owner.username}`} className="-my-2 inline-block py-2 text-sm text-ink/60 hover:text-ink">
         <i className="bx bx-arrow-back align-middle"></i> {isMine ? "My shelf" : `${owner.display_name || owner.username}'s shelf`}
       </Link>
 
@@ -56,7 +61,7 @@ const StatsPage = () => {
               key={y}
               onClick={() => setYear(y)}
               aria-pressed={year === y}
-              className={`rounded-full px-3.5 py-1 text-sm tabular-nums transition ${
+              className={`min-h-[2.25rem] rounded-full px-3.5 py-1.5 text-sm tabular-nums transition ${
                 year === y ? "bg-terra text-cream" : "text-ink/70 hover:text-ink"
               }`}
             >

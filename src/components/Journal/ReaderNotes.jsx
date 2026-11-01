@@ -6,7 +6,7 @@ const ReaderNotes = ({ notes }) => {
   const withWords = notes.filter((note) => note.review.trim() || note.quotes.length > 0);
 
   return (
-    <section className="mt-16 border-t border-line pt-10">
+    <section className="mt-10 border-t border-line pt-8 sm:mt-16 sm:pt-10">
       <h2 className="font-serif text-2xl font-bold">What readers felt</h2>
       {withWords.length === 0 ? (
         <p className="mt-3 text-ink/60">No one has written about this book yet.</p>

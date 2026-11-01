@@ -3,13 +3,17 @@ import { fetchCatalog } from "../lib/api";
 import { useReading } from "../context/ReadingContext";
 import BookshelfView from "../components/Shelf/BookshelfView";
 import { ShelfSkeleton } from "../components/Common/Skeleton";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { usePageMeta } from "../hooks/usePageTitle";
 
 // Every book anyone has added to BoiPoka
 const LibraryPage = () => {
   const { getEntry } = useReading();
   const [books, setBooks] = useState(null);
-  usePageTitle("Library");
+  usePageMeta({
+    title: "Library — Bangla and English books readers love",
+    description:
+      "Browse every book BoiPoka readers have shelved — Humayun Ahmed, Rabindranath Tagore, Samaresh Majumdar and more — and see what readers felt about each one.",
+  });
 
   useEffect(() => {
     fetchCatalog().then(setBooks).catch(() => setBooks([]));

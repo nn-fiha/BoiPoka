@@ -4,6 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 
 const navClass = ({ isActive }) => (isActive ? "text-[#f4c9a8]" : "hover:text-[#f4c9a8]");
+// Icon links get a 40px tap area on phones without looking any bigger
+const TAP = "inline-flex min-h-[2.5rem] min-w-[2.5rem] items-center justify-center";
 
 function Header() {
   const { profile, signOut } = useAuth();
@@ -29,17 +31,21 @@ function Header() {
             <div className="font-bangla text-xs sm:text-sm text-cream/70">আমার পড়ার জগৎ</div>
           </div>
         </Link>
-        <nav className="flex items-center gap-4 sm:gap-6 font-medium">
+        <nav className="flex items-center gap-1 font-medium sm:gap-5">
           <button
             onClick={toggleTheme}
-            className="hover:text-[#f4c9a8]"
+            className={`${TAP} hover:text-[#f4c9a8]`}
             aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             title={theme === "dark" ? "Light mode" : "Dark mode"}
           >
             <i className={`bx ${theme === "dark" ? "bx-sun" : "bx-moon"} align-middle text-xl`}></i>
           </button>
           {/* On phones these links live in the bottom tab bar once signed in */}
-          <NavLink to="/library" className={(state) => `${navClass(state)} ${profile ? "hidden sm:inline" : ""}`}>
+          <NavLink
+            to="/library"
+            aria-label="Library"
+            className={(state) => `${navClass(state)} ${TAP} ${profile ? "hidden sm:inline-flex" : ""}`}
+          >
             <i className="bx bx-book-open align-middle text-xl"></i>
             <span className="hidden sm:inline ml-1">Library</span>
           </NavLink>
@@ -55,12 +61,12 @@ function Header() {
               <NavLink to="/settings" className={(state) => `${navClass(state)} hidden sm:inline`} aria-label="Settings">
                 <i className="bx bx-cog align-middle text-xl"></i>
               </NavLink>
-              <button onClick={handleSignOut} className="hover:text-[#f4c9a8]" aria-label="Sign out" title="Sign out">
+              <button onClick={handleSignOut} className={`${TAP} hover:text-[#f4c9a8]`} aria-label="Sign out" title="Sign out">
                 <i className="bx bx-log-out align-middle text-xl"></i>
               </button>
             </>
           ) : (
-            <NavLink to="/login" className={navClass}>
+            <NavLink to="/login" className={(state) => `${navClass(state)} ${TAP} whitespace-nowrap`}>
               Sign in <i className="bx bx-log-in align-middle text-xl"></i>
             </NavLink>
           )}

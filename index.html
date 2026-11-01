@@ -1,21 +1,63 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#3f5a4a" />
-    <meta name="description" content="BoiPoka — put every book you've read on one shelf, keep a journal for each, and see what other readers felt." />
-    <!-- Link previews on Facebook, Messenger, WhatsApp, X -->
+    <title>BoiPoka — your reading journal and bookshelf · আমার পড়ার জগৎ</title>
+    <meta
+      name="description"
+      content="Put every book you've read on one shelf. Keep a reading journal with ratings, moods and quotes, set yearly reading goals, and share your bookshelf with friends. Made for Bangla and English readers."
+    />
+    <meta name="keywords" content="reading journal, bookshelf, book tracker, reading goals, Bangla books, বই, বইয়ের তাক, Goodreads alternative" />
+    <meta name="author" content="Nurun Nahar Fiha" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#3f5a4a" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#161a17" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href="https://boi-poka.vercel.app/" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Link previews on Facebook, Messenger, WhatsApp, LinkedIn and X -->
     <meta property="og:site_name" content="BoiPoka" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="BoiPoka · আমার পড়ার জগৎ" />
-    <meta property="og:description" content="Every book you've read, on one shelf — with your notes, moods and favourite quotes." />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="bn_BD" />
+    <meta property="og:title" content="BoiPoka — every book you've read, on one shelf" />
+    <meta
+      property="og:description"
+      content="A reading journal and bookshelf for Bangla and English readers: ratings, moods, quotes, yearly goals and shelves you can share."
+    />
     <meta property="og:url" content="https://boi-poka.vercel.app/" />
-    <meta property="og:image" content="https://boi-poka.vercel.app/images/boipoka.png" />
-    <meta property="og:image:alt" content="The BoiPoka bookworm bee" />
-    <meta name="twitter:card" content="summary" />
-    <link rel="manifest" href="/manifest.json" />
+    <meta property="og:image" content="https://boi-poka.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="BoiPoka: Bangla book covers on a wooden shelf beside the words Every book you've read, on one shelf" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BoiPoka — every book you've read, on one shelf" />
+    <meta name="twitter:description" content="A reading journal and bookshelf for Bangla and English readers." />
+    <meta name="twitter:image" content="https://boi-poka.vercel.app/og-image.png" />
+
+    <!-- Structured data so search engines understand what BoiPoka is -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "BoiPoka",
+        "alternateName": "বইপোকা",
+        "url": "https://boi-poka.vercel.app/",
+        "description": "A reading journal and bookshelf for Bangla and English readers.",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Any",
+        "inLanguage": ["en", "bn"],
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "author": { "@type": "Person", "name": "Nurun Nahar Fiha", "url": "https://github.com/nn-fiha" }
+      }
+    </script>
+
+    <link rel="preconnect" href="https://zlnzidhpjgyscdugkamb.supabase.co" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -31,7 +73,6 @@
         document.documentElement.classList.toggle("dark", dark);
       } catch {}
     </script>
-    <title>BoiPoka · আমার পড়ার জগৎ</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

@@ -10,7 +10,7 @@ import NewPasswordForm from "../components/Auth/NewPasswordForm";
 const ResetPasswordPage = () => {
   const { user, profile, loading, updatePassword } = useAuth();
   const navigate = useNavigate();
-  usePageTitle("Choose a new password");
+  usePageTitle("Choose a new password", { noindex: true });
 
   const handleSave = async (password) => {
     const result = await updatePassword(password);

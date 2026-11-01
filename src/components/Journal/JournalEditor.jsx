@@ -7,7 +7,7 @@ import TagEditor from "./TagEditor";
 import CollectionPicker from "./CollectionPicker";
 
 const Section = ({ title, children }) => (
-  <section className="mt-10">
+  <section className="mt-8 sm:mt-10">
     <h2 className="font-serif text-xl font-bold mb-3">{title}</h2>
     {children}
   </section>
@@ -37,22 +37,28 @@ const JournalEditor = ({ entry, book, tagSuggestions = [], onChange }) => {
 
   return (
     <>
-      <div className="mt-6 flex flex-wrap gap-2">
+      {/* Three even buttons on phones; pills on wider screens */}
+      <div className="mt-6 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
         {Object.entries(STATUSES).map(([key, status]) => (
           <button
             key={key}
             onClick={() => changeStatus(key)}
-            className={`rounded-full px-4 py-1.5 text-sm border transition ${
-              entry.status === key ? `${status.color} text-white border-transparent` : "border-line hover:bg-card"
+            aria-pressed={entry.status === key}
+            className={`flex min-h-[2.75rem] flex-col items-center justify-center rounded-2xl border px-2 py-1.5 text-sm leading-tight transition sm:flex-row sm:gap-1 sm:rounded-full sm:px-4 ${
+              entry.status === key ? `${status.color} border-transparent text-white` : "border-line hover:bg-card"
             }`}
           >
-            {status.label} <span className="font-bangla opacity-80">· {status.bangla}</span>
+            <span>{status.label}</span>
+            <span className="font-bangla text-xs opacity-80 sm:text-sm">
+              <span className="hidden sm:inline">· </span>
+              {status.bangla}
+            </span>
           </button>
         ))}
       </div>
 
-      <div className="mt-6 flex flex-wrap items-end gap-x-8 gap-y-5">
-        <div>
+      <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-5 sm:flex sm:flex-wrap sm:items-end sm:gap-x-8">
+        <div className="col-span-2 sm:col-span-1">
           <div className="text-xs uppercase tracking-wide text-ink/60 mb-1">My rating</div>
           <StarRating value={entry.rating} onChange={(rating) => onChange({ rating })} />
         </div>
@@ -60,13 +66,13 @@ const JournalEditor = ({ entry, book, tagSuggestions = [], onChange }) => {
           ["started_at", "Started"],
           ["finished_at", "Finished"],
         ].map(([field, label]) => (
-          <label key={field} className="text-xs uppercase tracking-wide text-ink/60">
+          <label key={field} className="min-w-0 text-xs uppercase tracking-wide text-ink/60">
             {label}
             <input
               type="date"
               value={entry[field] || ""}
               onChange={(e) => onChange({ [field]: e.target.value || null })}
-              className="mt-1 block rounded-md border border-line bg-card px-2 py-1 text-base normal-case tracking-normal text-ink"
+              className="mt-1 block h-11 w-full min-w-0 rounded-lg border border-line bg-card px-2 text-base normal-case tracking-normal text-ink sm:w-auto"
             />
           </label>
         ))}
@@ -88,7 +94,7 @@ const JournalEditor = ({ entry, book, tagSuggestions = [], onChange }) => {
             <button
               key={mood}
               onClick={() => toggleMood(mood)}
-              className={`rounded-full px-3 py-1 text-sm border transition ${
+              className={`rounded-full border px-3 py-1.5 text-sm transition sm:py-1 ${
                 entry.moods.includes(mood) ? "bg-sage text-white border-sage" : "border-line hover:bg-card"
               }`}
             >

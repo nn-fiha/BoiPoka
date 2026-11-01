@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useShelf } from "../hooks/useShelf";
 import { useReading } from "../context/ReadingContext";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { usePageMeta } from "../hooks/usePageTitle";
 import { finishedInYear } from "../lib/stats";
 import BookshelfView from "../components/Shelf/BookshelfView";
 import GoalCard from "../components/Stats/GoalCard";
@@ -19,7 +19,14 @@ const ShelfPage = () => {
   const [sharing, setSharing] = useState(false);
   const ownerName = owner?.display_name || owner?.username;
 
-  usePageTitle(owner ? (isMine ? "My bookshelf" : `${ownerName}'s bookshelf`) : null);
+  const readCount = items.filter(({ entry }) => entry.status === "read").length;
+  usePageMeta({
+    title: owner ? (isMine ? "My bookshelf" : `${ownerName}'s bookshelf`) : null,
+    description: owner
+      ? `${ownerName}'s bookshelf on BoiPoka — ${readCount} ${readCount === 1 ? "book" : "books"} read, with ratings, notes and favourite quotes.`
+      : null,
+    image: items.find(({ book }) => book.cover_url)?.book.cover_url,
+  });
 
   if (status === "missing") {
     return (
@@ -42,10 +49,10 @@ const ShelfPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-8">
-      <section className="py-6 sm:py-10 flex flex-wrap items-end justify-between gap-4">
+      <section className="flex flex-wrap items-end justify-between gap-3 py-5 sm:gap-4 sm:py-10">
         <div>
           <h1 className="font-serif text-3xl sm:text-5xl font-bold">{isMine ? "My bookshelf" : `${ownerName}'s shelf`}</h1>
-          <p className="mt-2 font-bangla text-lg text-ink/70">
+          <p className="mt-1 font-bangla text-base text-ink/70 sm:mt-2 sm:text-lg">
             {owner.bio || (isMine ? "যত বই পড়েছি, সব এক তাকে।" : `@${owner.username}`)}
           </p>
         </div>
@@ -53,7 +60,7 @@ const ShelfPage = () => {
           {isMine ? (
             <button
               onClick={() => setSharing(true)}
-              className="rounded-full border border-line bg-card px-4 py-2.5 font-medium hover:border-terra hover:text-terra"
+              className="rounded-full border border-line bg-card px-3.5 py-2 text-sm font-medium hover:border-terra hover:text-terra sm:px-4 sm:py-2.5 sm:text-base"
             >
               <i className="bx bx-share-alt align-middle"></i> Share
             </button>
@@ -61,12 +68,12 @@ const ShelfPage = () => {
             <ShareButton
               title={`${ownerName}'s bookshelf`}
               text={`${ownerName}'s bookshelf on BoiPoka`}
-              className="rounded-full border border-line bg-card px-4 py-2.5 font-medium hover:border-terra hover:text-terra"
+              className="rounded-full border border-line bg-card px-3.5 py-2 text-sm font-medium hover:border-terra hover:text-terra sm:px-4 sm:py-2.5 sm:text-base"
             />
           )}
           <Link
             to={`/u/${owner.username}/stats`}
-            className="rounded-full border border-line bg-card px-5 py-2.5 font-medium hover:border-terra hover:text-terra"
+            className="rounded-full border border-line bg-card px-3.5 py-2 text-sm font-medium hover:border-terra hover:text-terra sm:px-5 sm:py-2.5 sm:text-base"
           >
             <i className="bx bx-bar-chart-alt-2 align-middle"></i> Stats
           </Link>

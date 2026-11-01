@@ -275,7 +275,7 @@ const LoginPage = () => {
                 onBlur={blur("password")}
                 error={show("password")}
                 right={
-                  <button type="button" onClick={() => switchMode("forgot")} className="text-xs font-medium text-terra hover:underline">
+                  <button type="button" onClick={() => switchMode("forgot")} className="-my-2 py-2 text-xs font-medium text-terra hover:underline">
                     Forgot password?
                   </button>
                 }
@@ -320,7 +320,7 @@ const LoginPage = () => {
 
             <p className="mt-8 text-center text-sm text-ink/70">
               New to BoiPoka?{" "}
-              <button onClick={() => switchMode("signup")} className="font-medium text-terra hover:underline">
+              <button onClick={() => switchMode("signup")} className="-my-2 inline-block py-2 font-medium text-terra hover:underline">
                 Create your shelf
               </button>
             </p>
@@ -414,7 +414,7 @@ const LoginPage = () => {
             </form>
             <p className="mt-8 text-center text-sm text-ink/70">
               Already have a shelf?{" "}
-              <button onClick={() => switchMode("signin")} className="font-medium text-terra hover:underline">
+              <button onClick={() => switchMode("signin")} className="-my-2 inline-block py-2 font-medium text-terra hover:underline">
                 Sign in
               </button>
             </p>
@@ -456,7 +456,7 @@ const LoginPage = () => {
       </div>
 
       <p className="mt-10 text-center text-xs text-ink/40">
-        <Link to="/library" className="hover:text-ink/70">
+        <Link to="/library" className="inline-block py-2 hover:text-ink/70">
           Browse the library without an account →
         </Link>
       </p>
