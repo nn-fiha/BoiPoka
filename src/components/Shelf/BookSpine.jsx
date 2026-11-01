@@ -14,7 +14,7 @@ const BookSpine = ({ book, entry }) => {
     <Link
       to={`/book/${book.id}`}
       title={`${book.title} — ${book.author}`}
-      className="group relative shrink-0 rounded-t-sm rounded-b-[2px] transition-transform duration-200 hover:-translate-y-4 focus-visible:-translate-y-4 focus:outline-none"
+      className="group pointer-events-auto relative shrink-0 rounded-t-sm rounded-b-[2px] transition-transform duration-200 hover:-translate-y-4 focus-visible:-translate-y-4 focus:outline-none"
       style={{ width, height, background, color: foreground }}
     >
       <span className="absolute inset-y-0 left-0 w-[3px] bg-black/20" />

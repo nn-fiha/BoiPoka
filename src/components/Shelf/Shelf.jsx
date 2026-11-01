@@ -5,7 +5,9 @@ const Shelf = ({ label, items }) => {
   const pages = items.reduce((sum, { book }) => sum + (book.pages || 0), 0);
 
   return (
-    <section className="mb-14">
+    // The spine row reaches up over the content above (room for the hover cover preview),
+    // so the whole shelf ignores clicks except on the spines themselves
+    <section className="pointer-events-none mb-14">
       <div className="flex items-baseline justify-between mb-3 px-1">
         <h2 className="font-serif text-xl font-bold">{label}</h2>
         <span className="text-sm text-ink/60">
