@@ -25,7 +25,7 @@ const JournalEditor = ({ entry, onChange }) => {
             key={key}
             onClick={() => onChange({ status: key })}
             className={`rounded-full px-4 py-1.5 text-sm border transition ${
-              entry.status === key ? `${status.color} text-white border-transparent` : "border-wood/25 hover:bg-card"
+              entry.status === key ? `${status.color} text-white border-transparent` : "border-line hover:bg-card"
             }`}
           >
             {status.label} <span className="font-bangla opacity-80">· {status.bangla}</span>
@@ -48,7 +48,7 @@ const JournalEditor = ({ entry, onChange }) => {
               type="date"
               value={entry[field] || ""}
               onChange={(e) => onChange({ [field]: e.target.value || null })}
-              className="mt-1 block rounded-md border border-wood/25 bg-card px-2 py-1 text-base normal-case tracking-normal text-ink"
+              className="mt-1 block rounded-md border border-line bg-card px-2 py-1 text-base normal-case tracking-normal text-ink"
             />
           </label>
         ))}
@@ -61,7 +61,7 @@ const JournalEditor = ({ entry, onChange }) => {
               key={mood}
               onClick={() => toggleMood(mood)}
               className={`rounded-full px-3 py-1 text-sm border transition ${
-                entry.moods.includes(mood) ? "bg-sage text-white border-sage" : "border-wood/25 hover:bg-card"
+                entry.moods.includes(mood) ? "bg-sage text-white border-sage" : "border-line hover:bg-card"
               }`}
             >
               {mood}
@@ -76,7 +76,7 @@ const JournalEditor = ({ entry, onChange }) => {
           onChange={(e) => onChange({ review: e.target.value })}
           rows={7}
           placeholder="বাংলায় বা English-এ — what stayed with you?"
-          className="w-full rounded-lg border border-wood/25 bg-card p-4 font-bangla text-lg leading-relaxed focus:outline-none focus:ring-2 focus:ring-wood/40"
+          className="w-full rounded-lg border border-line bg-card p-4 font-bangla text-lg leading-relaxed focus:outline-none focus:ring-2 focus:ring-terra/40"
         />
         <p className="mt-1 text-xs text-ink/50">Saved automatically.</p>
       </Section>

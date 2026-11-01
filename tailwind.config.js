@@ -17,11 +17,12 @@ export default {
         paper: themed("paper"),
         ink: themed("ink"),
         card: themed("card"),
-        // Fixed light text for use on wooden (brown) surfaces in both themes
-        cream: "#f7f1e6",
+        line: themed("line"),
+        // Fixed light text for use on sage and terracotta surfaces in both themes
+        cream: "#f7f5ef",
         wood: { light: "#a9774a", DEFAULT: "#8a5a33", dark: "#5e3b1f" },
-        sage: "#74a892",
-        lilac: { light: "#b9b0f7", DEFAULT: "#8d80ee", dark: "#2b2463" },
+        sage: { light: "#8fae9b", DEFAULT: "#5f7f6b", dark: "#3f5a4a" },
+        terra: { light: "#e08a63", DEFAULT: "#c8643b", dark: "#a94f2b" },
       },
     },
   },

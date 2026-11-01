@@ -47,7 +47,7 @@ const ShelfPage = () => {
     return (
       <div className="py-24 text-center">
         <p className="text-ink/70">No public shelf at @{username}.</p>
-        <Link to="/" className="mt-4 inline-block text-wood underline">Go home</Link>
+        <Link to="/" className="mt-4 inline-block text-terra underline">Go home</Link>
       </div>
     );
   }
@@ -70,7 +70,7 @@ const ShelfPage = () => {
           </p>
         </div>
         {isMine && (
-          <Link to="/add" className="hidden sm:inline-block rounded-full bg-wood px-5 py-2.5 font-medium text-cream hover:bg-wood-dark">
+          <Link to="/add" className="hidden sm:inline-block rounded-full bg-terra px-5 py-2.5 font-medium text-cream hover:bg-terra-dark">
             <i className="bx bx-plus align-middle"></i> Add a book
           </Link>
         )}
@@ -82,7 +82,7 @@ const ShelfPage = () => {
         emptyMessage={
           isMine ? (
             <>
-              Your shelf is empty. <Link to="/add" className="text-wood underline">Add the first book you've read</Link>.
+              Your shelf is empty. <Link to="/add" className="text-terra underline">Add the first book you've read</Link>.
             </>
           ) : (
             "This shelf is still empty."

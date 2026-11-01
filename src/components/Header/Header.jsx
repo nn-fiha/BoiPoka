@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 
-const navClass = ({ isActive }) => (isActive ? "text-yellow-400" : "hover:text-yellow-300");
+const navClass = ({ isActive }) => (isActive ? "text-[#f4c9a8]" : "hover:text-[#f4c9a8]");
 
 function Header() {
   const { profile, signOut } = useAuth();
@@ -16,7 +16,7 @@ function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-wood-dark text-cream dark:bg-[#2a1b0f] dark:border-b dark:border-wood/30">
+    <header className="sticky top-0 z-30 bg-sage-dark text-cream dark:bg-[#1d2620] dark:border-b dark:border-line">
       <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
         <Link to="/" className="flex items-center gap-3 shrink-0">
           <img
@@ -32,7 +32,7 @@ function Header() {
         <nav className="flex items-center gap-4 sm:gap-6 font-medium">
           <button
             onClick={toggleTheme}
-            className="hover:text-yellow-300"
+            className="hover:text-[#f4c9a8]"
             aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             title={theme === "dark" ? "Light mode" : "Dark mode"}
           >
@@ -55,7 +55,7 @@ function Header() {
               <NavLink to="/settings" className={(state) => `${navClass(state)} hidden sm:inline`} aria-label="Settings">
                 <i className="bx bx-cog align-middle text-xl"></i>
               </NavLink>
-              <button onClick={handleSignOut} className="hover:text-yellow-300" aria-label="Sign out" title="Sign out">
+              <button onClick={handleSignOut} className="hover:text-[#f4c9a8]" aria-label="Sign out" title="Sign out">
                 <i className="bx bx-log-out align-middle text-xl"></i>
               </button>
             </>

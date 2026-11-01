@@ -3,7 +3,7 @@ import { Navigate, useLocation, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const inputClass =
-  "mt-1 w-full rounded-md border border-wood/25 bg-card px-3 py-2 focus:outline-none focus:ring-2 focus:ring-wood/40";
+  "mt-1 w-full rounded-md border border-line bg-card px-3 py-2 focus:outline-none focus:ring-2 focus:ring-terra/40";
 
 const LoginPage = () => {
   const { user, signIn, signUp } = useAuth();
@@ -77,7 +77,7 @@ const LoginPage = () => {
         {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800 dark:bg-red-950/60 dark:text-red-200">{error}</p>}
         {message && <p className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-200">{message}</p>}
 
-        <button disabled={busy} className="w-full rounded-full bg-wood py-3 font-medium text-cream hover:bg-wood-dark disabled:opacity-60">
+        <button disabled={busy} className="w-full rounded-full bg-terra py-3 font-medium text-cream hover:bg-terra-dark disabled:opacity-60">
           {busy ? "Please wait…" : mode === "signup" ? "Create account" : "Sign in"}
         </button>
       </form>
@@ -90,7 +90,7 @@ const LoginPage = () => {
             setError("");
             setMessage("");
           }}
-          className="font-medium text-wood underline"
+          className="font-medium text-terra underline"
         >
           {mode === "signup" ? "Sign in" : "Create an account"}
         </button>

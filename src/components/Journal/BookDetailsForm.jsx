@@ -4,7 +4,7 @@ import { updateBook } from "../../lib/api";
 import { GENRES } from "../../lib/genres";
 
 const inputClass =
-  "mt-1 w-full rounded-md border border-wood/25 bg-card px-2 py-1.5 font-bangla text-sm focus:outline-none focus:ring-2 focus:ring-wood/40";
+  "mt-1 w-full rounded-md border border-line bg-card px-2 py-1.5 font-bangla text-sm focus:outline-none focus:ring-2 focus:ring-terra/40";
 
 const FIELDS = ["title", "author", "genre", "language", "pages", "publisher", "isbn", "cover_url"];
 
@@ -39,7 +39,7 @@ const BookDetailsForm = ({ book, onSaved, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 space-y-3 rounded-lg border border-wood/20 bg-card/60 p-4">
+    <form onSubmit={handleSubmit} className="mt-6 space-y-3 rounded-lg border border-line bg-card/60 p-4">
       <label className="block text-xs font-medium text-ink/70">
         Title
         <input required value={form.title} onChange={set("title")} className={inputClass} />
@@ -79,7 +79,7 @@ const BookDetailsForm = ({ book, onSaved, onCancel }) => {
         <input type="url" value={form.cover_url} onChange={set("cover_url")} className={inputClass} placeholder="https://…" />
       </label>
       <div className="flex gap-2 pt-1">
-        <button disabled={busy} className="rounded-full bg-wood px-4 py-1.5 text-sm text-cream hover:bg-wood-dark disabled:opacity-60">
+        <button disabled={busy} className="rounded-full bg-terra px-4 py-1.5 text-sm text-cream hover:bg-terra-dark disabled:opacity-60">
           {busy ? "Saving…" : "Save"}
         </button>
         <button type="button" onClick={onCancel} className="rounded-full px-4 py-1.5 text-sm hover:bg-card">

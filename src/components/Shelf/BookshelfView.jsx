@@ -66,7 +66,7 @@ const BookshelfView = ({ items, title, emptyMessage, showStats = true, showStatu
             ["Pages", pagesRead.toLocaleString()],
             ["Authors", authors],
           ].map(([label, value]) => (
-            <div key={label} className="rounded-lg bg-card/60 border border-wood/15 px-3 py-2.5 sm:px-4 sm:py-3">
+            <div key={label} className="rounded-lg bg-card/60 border border-line px-3 py-2.5 sm:px-4 sm:py-3">
               <dt className="text-[10px] sm:text-xs uppercase tracking-wide text-ink/60">{label}</dt>
               <dd className="font-serif text-xl sm:text-2xl font-bold">{value}</dd>
             </div>
@@ -82,7 +82,7 @@ const BookshelfView = ({ items, title, emptyMessage, showStats = true, showStatu
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search title or author…"
-            className="w-full rounded-full border border-wood/25 bg-card pl-9 pr-4 py-2 font-bangla focus:outline-none focus:ring-2 focus:ring-wood/40"
+            className="w-full rounded-full border border-line bg-card pl-9 pr-4 py-2 font-bangla focus:outline-none focus:ring-2 focus:ring-terra/40"
           />
         </div>
         {showStatusFilter && (
@@ -93,7 +93,7 @@ const BookshelfView = ({ items, title, emptyMessage, showStats = true, showStatu
                 key={key}
                 onClick={() => setStatus(key)}
                 className={`shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-sm border transition ${
-                  status === key ? "bg-ink text-paper border-ink" : "border-wood/25 hover:bg-card"
+                  status === key ? "bg-ink text-paper border-ink" : "border-line hover:bg-card"
                 }`}
               >
                 {label}
@@ -102,7 +102,7 @@ const BookshelfView = ({ items, title, emptyMessage, showStats = true, showStatu
           </div>
         )}
         <div className="flex items-center justify-between gap-3 lg:ml-auto">
-          <div className="flex rounded-full border border-wood/25 p-0.5 text-sm" role="group" aria-label="Shelf style">
+          <div className="flex rounded-full border border-line p-0.5 text-sm" role="group" aria-label="Shelf style">
             {[
               ["covers", "bx-grid-alt", "Covers"],
               ["spines", "bx-book", "Spines"],
@@ -123,7 +123,7 @@ const BookshelfView = ({ items, title, emptyMessage, showStats = true, showStatu
               aria-label="Shelve by"
               value={groupBy}
               onChange={(e) => setGroupBy(e.target.value)}
-              className="ml-1 rounded-md border border-wood/25 bg-card px-2 py-1"
+              className="ml-1 rounded-md border border-line bg-card px-2 py-1"
             >
               <option value="genre">By genre</option>
               <option value="author">By author</option>

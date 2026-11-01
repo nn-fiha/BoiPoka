@@ -8,14 +8,14 @@ import { createBook, findBookByOpenLibraryKey, searchCatalog, searchOpenLibrary 
 
 
 const inputClass =
-  "mt-1 w-full rounded-md border border-wood/25 bg-card px-3 py-2 font-bangla focus:outline-none focus:ring-2 focus:ring-wood/40";
+  "mt-1 w-full rounded-md border border-line bg-card px-3 py-2 font-bangla focus:outline-none focus:ring-2 focus:ring-terra/40";
 
 const ResultRow = ({ book, onPick, busy, note }) => (
-  <li className="flex items-center gap-4 rounded-lg border border-wood/15 bg-card/70 p-3">
+  <li className="flex items-center gap-4 rounded-lg border border-line bg-card/70 p-3">
     {book.cover_url ? (
       <img src={book.cover_url} alt="" className="h-20 w-14 rounded object-cover" />
     ) : (
-      <div className="h-20 w-14 rounded bg-wood/20" />
+      <div className="h-20 w-14 rounded bg-line" />
     )}
     <div className="min-w-0 flex-1">
       <div className="font-bangla font-semibold truncate">{book.title}</div>
@@ -25,7 +25,7 @@ const ResultRow = ({ book, onPick, busy, note }) => (
     <button
       disabled={busy}
       onClick={() => onPick(book)}
-      className="shrink-0 rounded-full bg-wood px-4 py-1.5 text-sm text-cream hover:bg-wood-dark disabled:opacity-50"
+      className="shrink-0 rounded-full bg-terra px-4 py-1.5 text-sm text-cream hover:bg-terra-dark disabled:opacity-50"
     >
       Add
     </button>
@@ -164,7 +164,7 @@ const AddBookPage = () => {
         </div>
       )}
 
-      <section className="mt-12 rounded-lg border border-wood/15 bg-card/50 p-6">
+      <section className="mt-12 rounded-lg border border-line bg-card/50 p-6">
         <h2 className="font-serif text-xl font-bold">Add by hand</h2>
         <form onSubmit={handleManual} className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="text-sm font-medium sm:col-span-2">
@@ -199,7 +199,7 @@ const AddBookPage = () => {
             Cover image URL <span className="font-normal text-ink/50">(optional)</span>
             <input type="url" value={manual.cover_url} onChange={setField("cover_url")} className={inputClass} />
           </label>
-          <button disabled={busy} className="sm:col-span-2 rounded-full bg-wood py-2.5 font-medium text-cream hover:bg-wood-dark disabled:opacity-60">
+          <button disabled={busy} className="sm:col-span-2 rounded-full bg-terra py-2.5 font-medium text-cream hover:bg-terra-dark disabled:opacity-60">
             Add to my shelf
           </button>
         </form>

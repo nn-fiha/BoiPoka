@@ -6,16 +6,16 @@ const ReaderNotes = ({ notes }) => {
   const withWords = notes.filter((note) => note.review.trim() || note.quotes.length > 0);
 
   return (
-    <section className="mt-16 border-t border-wood/15 pt-10">
+    <section className="mt-16 border-t border-line pt-10">
       <h2 className="font-serif text-2xl font-bold">What readers felt</h2>
       {withWords.length === 0 ? (
         <p className="mt-3 text-ink/60">No one has written about this book yet.</p>
       ) : (
         <ul className="mt-6 space-y-6">
           {withWords.map((note) => (
-            <li key={note.id} className="rounded-lg bg-card/70 border border-wood/15 p-5">
+            <li key={note.id} className="rounded-lg bg-card/70 border border-line p-5">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-                <Link to={`/u/${note.profile.username}`} className="font-semibold hover:text-wood">
+                <Link to={`/u/${note.profile.username}`} className="font-semibold hover:text-terra">
                   {note.profile.display_name || note.profile.username}
                 </Link>
                 {note.rating > 0 && <span className="text-yellow-500">{"★".repeat(note.rating)}</span>}
@@ -29,7 +29,7 @@ const ReaderNotes = ({ notes }) => {
                 <p className="mt-3 whitespace-pre-line font-bangla text-lg leading-relaxed">{note.review}</p>
               )}
               {note.quotes.map((quote, index) => (
-                <blockquote key={index} className="mt-3 border-l-4 border-wood/60 pl-4 font-bangla text-ink/80">
+                <blockquote key={index} className="mt-3 border-l-4 border-terra/60 pl-4 font-bangla text-ink/80">
                   “{quote.text}”
                 </blockquote>
               ))}

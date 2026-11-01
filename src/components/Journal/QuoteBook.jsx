@@ -19,7 +19,7 @@ const QuoteBook = ({ quotes, onAdd, onRemove }) => {
       {quotes.length > 0 && (
         <ul className="space-y-3 mb-5">
           {quotes.map((quote, index) => (
-            <li key={index} className="group relative rounded-lg border-l-4 border-wood bg-card px-5 py-4">
+            <li key={index} className="group relative rounded-lg border-l-4 border-terra bg-card px-5 py-4">
               <blockquote className="font-bangla text-lg leading-relaxed">“{quote.text}”</blockquote>
               {quote.page && <div className="mt-1 text-sm text-ink/50">page {quote.page}</div>}
               <button
@@ -38,16 +38,16 @@ const QuoteBook = ({ quotes, onAdd, onRemove }) => {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="A line worth remembering…"
-          className="flex-1 rounded-md border border-wood/25 bg-card px-3 py-2 font-bangla focus:outline-none focus:ring-2 focus:ring-wood/40"
+          className="flex-1 rounded-md border border-line bg-card px-3 py-2 font-bangla focus:outline-none focus:ring-2 focus:ring-terra/40"
         />
         <input
           value={page}
           onChange={(e) => setPage(e.target.value)}
           placeholder="Page"
           inputMode="numeric"
-          className="sm:w-20 rounded-md border border-wood/25 bg-card px-3 py-2 focus:outline-none focus:ring-2 focus:ring-wood/40"
+          className="sm:w-20 rounded-md border border-line bg-card px-3 py-2 focus:outline-none focus:ring-2 focus:ring-terra/40"
         />
-        <button className="rounded-md bg-wood px-4 py-2 text-cream hover:bg-wood-dark">Add quote</button>
+        <button className="rounded-md bg-terra px-4 py-2 text-cream hover:bg-terra-dark">Add quote</button>
       </form>
     </div>
   );

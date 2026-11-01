@@ -38,7 +38,7 @@ const BookPage = () => {
     return (
       <div className="py-24 text-center">
         <p className="text-ink/70">That book isn't in the library.</p>
-        <Link to="/" className="mt-4 inline-block text-wood underline">Go home</Link>
+        <Link to="/" className="mt-4 inline-block text-terra underline">Go home</Link>
       </div>
     );
   }
@@ -96,7 +96,7 @@ const BookPage = () => {
                 ]
                   .filter(([, value]) => value)
                   .map(([label, value]) => (
-                    <div key={label} className="flex justify-between gap-4 border-b border-wood/10 pb-1">
+                    <div key={label} className="flex justify-between gap-4 border-b border-line pb-1">
                       <dt className="text-ink/60">{label}</dt>
                       <dd className="font-bangla text-right">{value}</dd>
                     </div>
@@ -123,7 +123,7 @@ const BookPage = () => {
           {entry ? (
             <JournalEditor entry={entry} onChange={(changes) => updateEntry(book.id, changes)} />
           ) : user ? (
-            <div className="mt-8 rounded-lg border border-dashed border-wood/40 p-6">
+            <div className="mt-8 rounded-lg border border-dashed border-line p-6">
               <p className="font-medium">Put this book on your shelf</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {Object.entries(STATUSES).map(([key, s]) => (
@@ -139,7 +139,7 @@ const BookPage = () => {
             </div>
           ) : (
             <p className="mt-8 rounded-lg bg-card/70 p-5">
-              <Link to="/login?mode=signup" className="font-medium text-wood underline">Start your own shelf</Link> to keep
+              <Link to="/login?mode=signup" className="font-medium text-terra underline">Start your own shelf</Link> to keep
               a journal for this book.
             </p>
           )}

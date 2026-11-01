@@ -17,17 +17,17 @@ const HomePage = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-8">
       <section className="py-10 sm:py-24 max-w-2xl">
-        <p className="font-bangla text-lg text-wood">আমার পড়ার জগৎ</p>
+        <p className="font-bangla text-lg text-terra">আমার পড়ার জগৎ</p>
         <h1 className="mt-2 font-serif text-4xl sm:text-6xl font-bold leading-tight">Every book you've read, on one shelf.</h1>
         <p className="mt-5 text-lg text-ink/70">
           Build your bookshelf, keep a journal for each book — how it felt, what stayed with you, the lines you loved —
           and share it with other readers.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link to="/login?mode=signup" className="rounded-full bg-wood px-6 py-3 font-medium text-cream hover:bg-wood-dark">
+          <Link to="/login?mode=signup" className="rounded-full bg-terra px-6 py-3 font-medium text-cream hover:bg-terra-dark">
             Start my shelf
           </Link>
-          <Link to="/login" className="rounded-full border border-wood/30 px-6 py-3 font-medium hover:bg-card">
+          <Link to="/login" className="rounded-full border border-line px-6 py-3 font-medium hover:bg-card">
             Sign in
           </Link>
         </div>
@@ -41,11 +41,14 @@ const HomePage = () => {
               <li key={reader.username}>
                 <Link
                   to={`/u/${reader.username}`}
-                  className="block rounded-lg border border-wood/15 bg-card/70 p-5 hover:shadow-md transition"
+                  className="block rounded-lg border border-line bg-card/70 p-5 hover:shadow-md transition"
                 >
                   <div className="font-semibold">{reader.display_name || reader.username}</div>
                   <div className="text-sm text-ink/60">@{reader.username}</div>
-                  <div className="mt-2 text-sm">{reader.shelf_entries?.[0]?.count ?? 0} books on the shelf</div>
+                  <div className="mt-2 text-sm">
+                    {reader.shelf_entries?.[0]?.count ?? 0} {reader.shelf_entries?.[0]?.count === 1 ? "book" : "books"} on the
+                    shelf
+                  </div>
                 </Link>
               </li>
             ))}

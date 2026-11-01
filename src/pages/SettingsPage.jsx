@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { updateProfile } from "../lib/api";
 
 const inputClass =
-  "mt-1 w-full rounded-md border border-wood/25 bg-card px-3 py-2 font-bangla focus:outline-none focus:ring-2 focus:ring-wood/40";
+  "mt-1 w-full rounded-md border border-line bg-card px-3 py-2 font-bangla focus:outline-none focus:ring-2 focus:ring-terra/40";
 
 const SettingsPage = () => {
   const { profile, setProfile } = useAuth();
@@ -52,12 +52,12 @@ const SettingsPage = () => {
           />
         </label>
 
-        <label className="flex gap-3 rounded-lg border border-wood/15 bg-card/60 p-4">
+        <label className="flex gap-3 rounded-lg border border-line bg-card/60 p-4">
           <input
             type="checkbox"
             checked={form.is_public}
             onChange={(e) => setForm({ ...form, is_public: e.target.checked })}
-            className="mt-1 h-4 w-4 accent-wood"
+            className="mt-1 h-4 w-4 accent-terra"
           />
           <span>
             <span className="font-medium">Public shelf</span>
@@ -67,12 +67,12 @@ const SettingsPage = () => {
           </span>
         </label>
 
-        <label className="flex gap-3 rounded-lg border border-wood/15 bg-card/60 p-4">
+        <label className="flex gap-3 rounded-lg border border-line bg-card/60 p-4">
           <input
             type="checkbox"
             checked={form.research_consent}
             onChange={(e) => setForm({ ...form, research_consent: e.target.checked })}
-            className="mt-1 h-4 w-4 accent-wood"
+            className="mt-1 h-4 w-4 accent-terra"
           />
           <span>
             <span className="font-medium">Help Bangla language research</span>
@@ -83,7 +83,7 @@ const SettingsPage = () => {
           </span>
         </label>
 
-        <button disabled={busy} className="rounded-full bg-wood px-6 py-2.5 font-medium text-cream hover:bg-wood-dark disabled:opacity-60">
+        <button disabled={busy} className="rounded-full bg-terra px-6 py-2.5 font-medium text-cream hover:bg-terra-dark disabled:opacity-60">
           Save
         </button>
       </form>
