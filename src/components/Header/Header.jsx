@@ -1,79 +1,71 @@
 import React from "react";
-import SearchBox from "./SearchBox";
-import Dropdown from "./Dropdown";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
+
+const navClass = ({ isActive }) => (isActive ? "text-yellow-400" : "hover:text-yellow-300");
 
 function Header() {
-  const writersOptions = [
-   
-    { value: "writer1", label: "Writer 1" },
-    { value: "writer2", label: "Writer 2" },
-    { value: "writer3", label: "Writer 3" },
-    
-  ];
+  const { profile, signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
-  const genresOptions = [
- 
-    { value: "genre1", label: "Genre 1" },
-    { value: "genre2", label: "Genre 2" },
-    { value: "genre3", label: "Genre 3" },
-  
-  ];
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
-  const publishersOptions = [
-   
-    { value: "publisher1", label: "Publisher 1" },
-    { value: "publisher2", label: "Publisher 2" },
-    { value: "publisher3", label: "Publisher 3" },
-   
-  ];
   return (
-    <header>
-      <div class="bg-yellow-500 flex justify-around items-center gap-4 font-poppins h-24">
-        <div>
-          <img src="/images/boipoka.png" alt="BoiPoka Logo" className="h-24" />
-        </div>
-        <div>
-          <SearchBox />
-        </div>
-        <div class="flex justify-between items-center gap-6 text-lg text-white font-medium">
-          <a href="#">Home</a>
-          <a href="">Blog</a>
-          <a href="">Contact</a>
-          <a href="">
-            Login <i class="bx bx-log-in text-xl align-middle"></i>
-          </a>
-        </div>
-      </div>
-      <div class="bg-[#74a892] flex justify-center gap-20 items-center font-poppins h-12 text-white mb-20">
-      
-        <Dropdown label="Genre" options={genresOptions} />
-        <button>Best Sellers</button>
-        <Dropdown label="Writer" options={writersOptions} />
-        <button>Language</button>
-        <Dropdown label="Publisher" options={publishersOptions} />
-        <button>Price</button>
-        <button>Academic Books</button>
-        <div>
-        <Link
-            to={"/home/cart"}
-
-          >
-             <button
-            className="px-4 py-2 mr-3 bg-teal-700 text-white rounded hover:bg-teal-600 "
-          >
-            <i class='bx bx-cart-add text-white text-xl '></i>
-            </button>
-          </Link>
-
-          <button
-            className="px-4 py-2 bg-teal-700 text-white rounded hover:bg-teal-600 "
-          >
-           <i className='bx bx-heart text-white text-xl'></i>
-          </button>
+    <header className="sticky top-0 z-30 bg-wood-dark text-cream dark:bg-[#2a1b0f] dark:border-b dark:border-wood/30">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+        <Link to="/" className="flex items-center gap-3 shrink-0">
+          <img
+            src="/images/boipoka.png"
+            alt="BoiPoka logo"
+            className="h-11 w-11 sm:h-14 sm:w-14 object-contain rounded-full bg-yellow-500"
+          />
+          <div>
+            <div className="font-serif text-xl sm:text-2xl font-bold leading-none">BoiPoka</div>
+            <div className="font-bangla text-xs sm:text-sm text-cream/70">আমার পড়ার জগৎ</div>
           </div>
-      </div> 
-     
+        </Link>
+        <nav className="flex items-center gap-4 sm:gap-6 font-medium">
+          <button
+            onClick={toggleTheme}
+            className="hover:text-yellow-300"
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            title={theme === "dark" ? "Light mode" : "Dark mode"}
+          >
+            <i className={`bx ${theme === "dark" ? "bx-sun" : "bx-moon"} align-middle text-xl`}></i>
+          </button>
+          {/* On phones these links live in the bottom tab bar once signed in */}
+          <NavLink to="/library" className={(state) => `${navClass(state)} ${profile ? "hidden sm:inline" : ""}`}>
+            <i className="bx bx-book-open align-middle text-xl"></i>
+            <span className="hidden sm:inline ml-1">Library</span>
+          </NavLink>
+          {profile ? (
+            <>
+              <NavLink to={`/u/${profile.username}`} className={(state) => `${navClass(state)} hidden sm:inline`}>
+                <i className="bx bx-library align-middle text-xl mr-1"></i>My Shelf
+              </NavLink>
+              <NavLink to="/add" className={(state) => `${navClass(state)} hidden sm:inline`}>
+                <i className="bx bx-plus align-middle text-xl"></i>
+                <span className="ml-1">Add</span>
+              </NavLink>
+              <NavLink to="/settings" className={(state) => `${navClass(state)} hidden sm:inline`} aria-label="Settings">
+                <i className="bx bx-cog align-middle text-xl"></i>
+              </NavLink>
+              <button onClick={handleSignOut} className="hover:text-yellow-300" aria-label="Sign out" title="Sign out">
+                <i className="bx bx-log-out align-middle text-xl"></i>
+              </button>
+            </>
+          ) : (
+            <NavLink to="/login" className={navClass}>
+              Sign in <i className="bx bx-log-in align-middle text-xl"></i>
+            </NavLink>
+          )}
+        </nav>
+      </div>
     </header>
   );
 }
