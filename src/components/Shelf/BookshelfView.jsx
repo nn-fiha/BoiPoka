@@ -8,6 +8,21 @@ const GROUPINGS = {
   author: (book) => book.author,
 };
 
+// How books are ordered inside each shelf
+const BOOK_ORDERS = {
+  added: { label: "Recently added", compare: (a, b) => (b.entry.created_at || "").localeCompare(a.entry.created_at || "") },
+  finished: {
+    label: "Date read",
+    // Newest finish first; books without a finish date go to the end
+    compare: (a, b) => (b.entry.finished_at || "").localeCompare(a.entry.finished_at || ""),
+  },
+  rating: {
+    label: "Highest rated",
+    compare: (a, b) => (b.entry.rating || 0) - (a.entry.rating || 0) || BOOK_ORDERS.finished.compare(a, b),
+  },
+  title: { label: "Title A–Z", compare: (a, b) => a.book.title.localeCompare(b.book.title) },
+};
+
 const VIEW_KEY = "boipoka.shelfView";
 
 const readView = () => {
@@ -36,6 +51,7 @@ const BookshelfView = ({
   const [groupBy, setGroupBy] = useState("genre");
   // Shelves in A–Z order, or the biggest shelves first
   const [order, setOrder] = useState("name");
+  const [bookOrder, setBookOrder] = useState("added");
   const [view, setView] = useState(readView);
   // Phones tuck view, sort, shelves and tags into a panel that opens under the search bar
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -69,9 +85,10 @@ const BookshelfView = ({
       const key = GROUPINGS[groupBy](item.book);
       (groups[key] = groups[key] || []).push(item);
     });
+    Object.values(groups).forEach((group) => group.sort(BOOK_ORDERS[bookOrder].compare));
     const byName = ([a], [b]) => a.localeCompare(b);
     return Object.entries(groups).sort(order === "count" ? (a, b) => b[1].length - a[1].length || byName(a, b) : byName);
-  }, [visibleItems, groupBy, order]);
+  }, [visibleItems, groupBy, order, bookOrder]);
 
   const readItems = items.filter(({ entry }) => entry.status === "read");
   const statusCounts = items.reduce(
@@ -81,7 +98,7 @@ const BookshelfView = ({
   const pagesRead = readItems.reduce((sum, { book }) => sum + (book.pages || 0), 0);
   const authors = new Set(readItems.map(({ book }) => book.author)).size;
 
-  const activeFilters = (collection ? 1 : 0) + (tag ? 1 : 0) + (groupBy !== "genre" ? 1 : 0) + (order !== "name" ? 1 : 0);
+  const activeFilters = (collection ? 1 : 0) + (tag ? 1 : 0) + (groupBy !== "genre" ? 1 : 0) + (order !== "name" ? 1 : 0) + (bookOrder !== "added" ? 1 : 0);
 
   const viewToggle = (
     <div className="flex h-11 items-center rounded-full border border-line bg-card p-1 text-sm" role="group" aria-label="Shelf style">
@@ -120,6 +137,26 @@ const BookshelfView = ({
         <option value="genre:count">By genre · most books</option>
         <option value="author:name">By author · A–Z</option>
         <option value="author:count">By author · most books</option>
+      </select>
+      <i className="bx bx-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ink/50"></i>
+    </div>
+  );
+
+  // Personal shelves only; library books have no dates or ratings to sort by
+  const bookOrderSelect = showStatusFilter && (
+    <div className="relative">
+      <i className="bx bx-list-ol pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/50"></i>
+      <select
+        value={bookOrder}
+        onChange={(e) => setBookOrder(e.target.value)}
+        aria-label="Order books on each shelf"
+        className="h-11 appearance-none rounded-full border border-line bg-card pl-9 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-terra/40"
+      >
+        {Object.entries(BOOK_ORDERS).map(([key, { label }]) => (
+          <option key={key} value={key}>
+            {label}
+          </option>
+        ))}
       </select>
       <i className="bx bx-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ink/50"></i>
     </div>
@@ -247,6 +284,7 @@ const BookshelfView = ({
           <div className="hidden items-center gap-2 sm:flex">
             {viewToggle}
             {sortSelect}
+            {bookOrderSelect}
           </div>
         </div>
 
@@ -304,6 +342,25 @@ const BookshelfView = ({
                   ))}
                 </div>
               </section>
+              {showStatusFilter && (
+                <section>
+                  <h3 className="mb-2 text-[11px] font-medium uppercase tracking-wide text-ink/60">Books on each shelf</h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    {Object.entries(BOOK_ORDERS).map(([key, { label }]) => (
+                      <button
+                        key={key}
+                        onClick={() => setBookOrder(key)}
+                        aria-pressed={bookOrder === key}
+                        className={`h-10 rounded-full border text-sm transition ${
+                          bookOrder === key ? "border-ink bg-ink text-paper" : "border-line"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              )}
               {collections.length > 0 && (
                 <section>
                   <h3 className="mb-2 text-[11px] font-medium uppercase tracking-wide text-ink/60">My shelves</h3>

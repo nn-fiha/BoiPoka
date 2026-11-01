@@ -54,7 +54,15 @@ const StatsPage = () => {
       </Link>
 
       <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
-        <h1 className="font-serif text-3xl sm:text-5xl font-bold">{name} reading in {year}</h1>
+        <div>
+          <h1 className="font-serif text-3xl sm:text-5xl font-bold">{name} reading in {year}</h1>
+          <Link
+            to={`/u/${owner.username}/wrapped`}
+            className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-terra px-4 py-2 text-sm font-medium text-cream transition hover:bg-terra-dark"
+          >
+            <i className="bx bx-gift"></i> {isMine ? "Share my year in books" : `See ${owner.display_name || owner.username}'s year in books`}
+          </Link>
+        </div>
         <div className="flex gap-1 rounded-full border border-line bg-card p-1" role="group" aria-label="Year">
           {years.slice(0, 5).map((y) => (
             <button
