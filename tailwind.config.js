@@ -13,6 +13,28 @@ export default {
         serif: ["Fraunces", "Hind Siliguri", "serif"],
         display: ["Limelight", "Fraunces", "serif"],
       },
+      keyframes: {
+        "fade-in": { from: { opacity: "0" }, to: { opacity: "1" } },
+        "fade-out": { from: { opacity: "1" }, to: { opacity: "0" } },
+        "pop-in": {
+          from: { opacity: "0", transform: "translateY(8px) scale(0.96)" },
+          to: { opacity: "1", transform: "translateY(0) scale(1)" },
+        },
+        "pop-out": {
+          from: { opacity: "1", transform: "translateY(0) scale(1)" },
+          to: { opacity: "0", transform: "translateY(8px) scale(0.96)" },
+        },
+        "sheet-in": { from: { transform: "translateY(100%)" }, to: { transform: "translateY(0)" } },
+        "sheet-out": { from: { transform: "translateY(0)" }, to: { transform: "translateY(100%)" } },
+      },
+      animation: {
+        "fade-in": "fade-in 180ms ease-out both",
+        "fade-out": "fade-out 160ms ease-in both",
+        "pop-in": "pop-in 220ms cubic-bezier(0.16, 1, 0.3, 1) both",
+        "pop-out": "pop-out 160ms ease-in both",
+        "sheet-in": "sheet-in 280ms cubic-bezier(0.16, 1, 0.3, 1) both",
+        "sheet-out": "sheet-out 200ms ease-in both",
+      },
       colors: {
         paper: themed("paper"),
         ink: themed("ink"),

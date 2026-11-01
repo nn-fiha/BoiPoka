@@ -80,3 +80,71 @@ export const searchOpenLibrary = async (query) => {
 
 export const updateBook = async (id, changes) =>
   unwrap(await supabase.from("books").update(changes).eq("id", id).select().maybeSingle());
+
+export const fetchGoal = async (userId, year) =>
+  unwrap(await supabase.from("reading_goals").select("*").eq("user_id", userId).eq("year", year).maybeSingle());
+
+export const saveGoal = async (userId, year, target) =>
+  unwrap(
+    await supabase
+      .from("reading_goals")
+      .upsert({ user_id: userId, year, target, updated_at: new Date().toISOString() })
+      .select()
+      .single()
+  );
+
+export const deleteGoal = async (userId, year) =>
+  unwrap(await supabase.from("reading_goals").delete().eq("user_id", userId).eq("year", year));
+
+// Custom shelves ------------------------------------------------------------
+
+const toCollection = ({ collection_books: members = [], ...collection }) => ({
+  ...collection,
+  entryIds: members.map((member) => member.entry_id),
+});
+
+export const fetchCollections = async (userId) =>
+  unwrap(
+    await supabase
+      .from("collections")
+      .select("id, name, created_at, collection_books(entry_id)")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: true })
+  ).map(toCollection);
+
+export const createCollection = async (name) =>
+  toCollection(unwrap(await supabase.from("collections").insert({ name }).select("id, name, created_at").single()));
+
+export const deleteCollection = async (id) => unwrap(await supabase.from("collections").delete().eq("id", id));
+
+export const addToCollection = async (collectionId, entryId) =>
+  unwrap(await supabase.from("collection_books").insert({ collection_id: collectionId, entry_id: entryId }));
+
+export const removeFromCollection = async (collectionId, entryId) =>
+  unwrap(
+    await supabase.from("collection_books").delete().eq("collection_id", collectionId).eq("entry_id", entryId)
+  );
+
+// Recommendations -------------------------------------------------------------
+
+// Books loved (4+ stars) by readers who also loved this one
+export const fetchAlsoLoved = async (bookId) => {
+  const rows = unwrap(await supabase.rpc("also_loved", { target_book: bookId, max_results: 6 }));
+  if (rows.length === 0) return [];
+  const books = unwrap(await supabase.from("books").select("*").in("id", rows.map((row) => row.book_id)));
+  const byId = Object.fromEntries(books.map((book) => [book.id, book]));
+  return rows.filter((row) => byId[row.book_id]).map((row) => ({ book: byId[row.book_id], readers: row.readers }));
+};
+
+// Fallback when nobody has rated the book yet: same author first, then same genre
+export const fetchRelatedBooks = async (book) => {
+  const sameAuthor = unwrap(
+    await supabase.from("books").select("*").eq("author", book.author).neq("id", book.id).limit(6)
+  );
+  if (sameAuthor.length >= 3) return { reason: "author", books: sameAuthor };
+  const sameGenre = unwrap(
+    await supabase.from("books").select("*").eq("genre", book.genre).neq("id", book.id).limit(6 - sameAuthor.length)
+  );
+  const seen = new Set(sameAuthor.map((b) => b.id));
+  return { reason: sameAuthor.length ? "mixed" : "genre", books: [...sameAuthor, ...sameGenre.filter((b) => !seen.has(b.id))] };
+};

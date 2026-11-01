@@ -14,7 +14,7 @@ const BookSpine = ({ book, entry }) => {
     <Link
       to={`/book/${book.id}`}
       title={`${book.title} — ${book.author}`}
-      className="group pointer-events-auto relative shrink-0 rounded-t-sm rounded-b-[2px] transition-transform duration-200 hover:-translate-y-4 focus-visible:-translate-y-4 focus:outline-none"
+      className="group pointer-events-auto relative shrink-0 rounded-t-sm rounded-b-[2px] transition-transform duration-300 ease-out hover:-translate-y-4 focus-visible:-translate-y-4 focus:outline-none"
       style={{ width, height, background, color: foreground }}
     >
       <span className="absolute inset-y-0 left-0 w-[3px] bg-black/20" />
@@ -32,8 +32,8 @@ const BookSpine = ({ book, entry }) => {
       )}
 
       {/* Cover peek on hover */}
-      <span className="pointer-events-none absolute bottom-full left-0 mb-6 hidden group-hover:flex group-focus-visible:flex flex-col items-start z-20">
-        {book.cover_url && <img src={book.cover_url} alt="" className="h-40 w-auto rounded shadow-2xl" />}
+      <span className="pointer-events-none absolute bottom-full left-0 z-20 mb-6 flex origin-bottom-left flex-col items-start opacity-0 translate-y-2 scale-95 transition duration-200 ease-out group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:scale-100 group-focus-visible:opacity-100">
+        {book.cover_url && <img src={book.cover_url} alt="" loading="lazy" className="h-40 w-auto rounded shadow-2xl" />}
         <span className="mt-2 whitespace-nowrap rounded bg-ink px-2 py-1 font-bangla text-xs text-paper">
           {book.author}
           {entry.rating > 0 && <span className="ml-1 text-yellow-400">{"★".repeat(entry.rating)}</span>}

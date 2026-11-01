@@ -5,17 +5,25 @@ import { STATUSES, useReading } from "../context/ReadingContext";
 import { fetchBook, fetchReaderNotes } from "../lib/api";
 import JournalEditor from "../components/Journal/JournalEditor";
 import ReaderNotes from "../components/Journal/ReaderNotes";
+import AlsoLoved from "../components/Journal/AlsoLoved";
+import ShareButton from "../components/Common/ShareButton";
+import ConfirmDialog from "../components/Common/ConfirmDialog";
 import BookCover from "../components/Shelf/BookCover";
 import BookDetailsForm from "../components/Journal/BookDetailsForm";
+import { BookSkeleton } from "../components/Common/Skeleton";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 const BookPage = () => {
   const { id } = useParams();
   const { user, profile } = useAuth();
-  const { getEntry, updateEntry, addToShelf, removeFromShelf, syncBook } = useReading();
+  const { entries, getEntry, updateEntry, addToShelf, removeFromShelf, syncBook } = useReading();
   const [book, setBook] = useState(null);
   const [notes, setNotes] = useState([]);
   const [status, setStatus] = useState("loading");
   const [editing, setEditing] = useState(false);
+  const [confirmingRemove, setConfirmingRemove] = useState(false);
+
+  usePageTitle(book ? `${book.title} — ${book.author}` : null);
 
   useEffect(() => {
     let cancelled = false;
@@ -33,7 +41,7 @@ const BookPage = () => {
     };
   }, [id]);
 
-  if (status === "loading") return <p className="py-24 text-center text-ink/60">Opening the book…</p>;
+  if (status === "loading") return <BookSkeleton />;
   if (status === "missing") {
     return (
       <div className="py-24 text-center">
@@ -53,17 +61,27 @@ const BookPage = () => {
   };
   const otherNotes = notes.filter((note) => note.profile?.username !== profile?.username);
 
-  const handleRemove = () => {
-    if (window.confirm("Remove this book and your notes from your shelf?")) removeFromShelf(book.id);
+  const handleRemove = async () => {
+    setConfirmingRemove(false);
+    await removeFromShelf(book.id);
   };
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
-      {profile && (
-        <Link to={`/u/${profile.username}`} className="text-sm text-ink/60 hover:text-ink">
-          <i className="bx bx-arrow-back align-middle"></i> My shelf
-        </Link>
-      )}
+      <div className="flex items-center justify-between gap-4">
+        {profile ? (
+          <Link to={`/u/${profile.username}`} className="text-sm text-ink/60 hover:text-ink">
+            <i className="bx bx-arrow-back align-middle"></i> My shelf
+          </Link>
+        ) : (
+          <span />
+        )}
+        <ShareButton
+          title={`${book.title} — ${book.author}`}
+          text={`${book.title} on BoiPoka`}
+          className="rounded-full border border-line px-4 py-1.5 text-sm hover:border-terra hover:text-terra"
+        />
+      </div>
 
       {/* Phones: compact cover + title; book details move below the journal */}
       <div className="mt-5 flex gap-4 md:hidden">
@@ -110,7 +128,7 @@ const BookPage = () => {
             </>
           )}
           {entry && (
-            <button onClick={handleRemove} className="mt-6 block text-sm text-red-800/80 hover:text-red-800 dark:text-red-300/80 dark:hover:text-red-300">
+            <button onClick={() => setConfirmingRemove(true)} className="mt-6 block text-sm text-red-800/80 hover:text-red-800 dark:text-red-300/80 dark:hover:text-red-300">
               <i className="bx bx-trash align-middle"></i> Remove from my shelf
             </button>
           )}
@@ -121,7 +139,12 @@ const BookPage = () => {
           <p className="hidden md:block mt-1 font-bangla text-xl text-ink/70">{book.author}</p>
 
           {entry ? (
-            <JournalEditor entry={entry} onChange={(changes) => updateEntry(book.id, changes)} />
+            <JournalEditor
+              entry={entry}
+              book={book}
+              tagSuggestions={[...new Set(Object.values(entries).flatMap((e) => e.tags || []))]}
+              onChange={(changes) => updateEntry(book.id, changes)}
+            />
           ) : user ? (
             <div className="mt-8 rounded-lg border border-dashed border-line p-6">
               <p className="font-medium">Put this book on your shelf</p>
@@ -146,7 +169,18 @@ const BookPage = () => {
         </article>
       </div>
 
+      <ConfirmDialog
+        open={confirmingRemove}
+        danger
+        title="Remove from your shelf?"
+        message={`Your rating, review, quotes and tags for “${book.title}” will be deleted. This can't be undone.`}
+        confirmLabel="Remove book"
+        onConfirm={handleRemove}
+        onCancel={() => setConfirmingRemove(false)}
+      />
+
       <ReaderNotes notes={otherNotes} />
+      <AlsoLoved book={book} />
     </div>
   );
 };

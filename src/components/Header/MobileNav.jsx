@@ -19,9 +19,10 @@ const MobileNav = () => {
         [`/u/${profile.username}`, "bx-library", "My Shelf"],
         ["/library", "bx-book-open", "Library"],
         ["/add", "bx-plus-circle", "Add"],
+        [`/u/${profile.username}/stats`, "bx-bar-chart-alt-2", "Stats"],
         ["/settings", "bx-cog", "Settings"],
       ].map(([to, icon, label]) => (
-        <NavLink key={to} to={to} className={tabClass}>
+        <NavLink key={to} to={to} end className={tabClass}>
           <i className={`bx ${icon} text-2xl leading-none`}></i>
           {label}
         </NavLink>

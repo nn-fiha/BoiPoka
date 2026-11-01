@@ -88,3 +88,41 @@ body {
   background: linear-gradient(180deg, #3c4840, #2a332d);
   box-shadow: 0 14px 18px -8px rgba(0, 0, 0, 0.7);
 }
+
+/* Toast notifications: small paper cards that match the site --------------- */
+.Toastify .Toastify__toast-container {
+  --toastify-toast-width: 340px;
+  --toastify-font-family: Poppins, "Hind Siliguri", sans-serif;
+}
+
+.Toastify .Toastify__toast {
+  min-height: 0;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgb(var(--color-line));
+  border-radius: 1rem;
+  background: rgb(var(--color-card));
+  color: rgb(var(--color-ink));
+  font-size: 0.875rem;
+  box-shadow: 0 12px 32px -12px rgba(20, 30, 24, 0.35);
+}
+
+.Toastify .Toastify__toast--error {
+  border-color: rgb(239 68 68 / 0.35);
+}
+
+.Toastify .Toastify__toast-icon {
+  width: auto;
+  margin-inline-end: 0.625rem;
+}
+
+/* Phones: float above the bottom tab bar instead of hugging the screen edge */
+@media (max-width: 480px) {
+  .Toastify .Toastify__toast-container--bottom-right {
+    left: 1rem;
+    right: 1rem;
+    bottom: calc(4.5rem + env(safe-area-inset-bottom));
+    width: auto;
+    padding: 0;
+  }
+}

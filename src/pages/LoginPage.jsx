@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { usePageTitle } from "../hooks/usePageTitle";
 import { Navigate, useLocation, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -14,6 +15,7 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  usePageTitle(mode === "signup" ? "Sign up" : "Sign in");
 
   if (user) return <Navigate to={location.state?.from || "/"} replace />;
 

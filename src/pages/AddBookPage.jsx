@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { usePageTitle } from "../hooks/usePageTitle";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
@@ -36,6 +37,7 @@ const AddBookPage = () => {
   const { user } = useAuth();
   const { getEntry, addToShelf } = useReading();
   const navigate = useNavigate();
+  usePageTitle("Add a book");
   const [query, setQuery] = useState("");
   const [catalogResults, setCatalogResults] = useState([]);
   const [openLibraryResults, setOpenLibraryResults] = useState([]);

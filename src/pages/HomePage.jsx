@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { usePageTitle } from "../hooks/usePageTitle";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { fetchPublicProfiles } from "../lib/api";
@@ -6,6 +7,7 @@ import { fetchPublicProfiles } from "../lib/api";
 const HomePage = () => {
   const { profile, loading } = useAuth();
   const [readers, setReaders] = useState([]);
+  usePageTitle(null);
 
   useEffect(() => {
     fetchPublicProfiles().then(setReaders).catch(() => setReaders([]));

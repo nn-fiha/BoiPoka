@@ -39,7 +39,7 @@ const BookDetailsForm = ({ book, onSaved, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 space-y-3 rounded-lg border border-line bg-card/60 p-4">
+    <form onSubmit={handleSubmit} className="motion-safe:animate-pop-in mt-6 space-y-3 rounded-lg border border-line bg-card/60 p-4">
       <label className="block text-xs font-medium text-ink/70">
         Title
         <input required value={form.title} onChange={set("title")} className={inputClass} />

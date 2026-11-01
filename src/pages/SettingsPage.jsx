@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { usePageTitle } from "../hooks/usePageTitle";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 import { updateProfile } from "../lib/api";
@@ -15,6 +16,7 @@ const SettingsPage = () => {
     research_consent: profile?.research_consent ?? false,
   });
   const [busy, setBusy] = useState(false);
+  usePageTitle("Settings");
 
   if (!profile) return <p className="py-24 text-center text-ink/60">Loading…</p>;
 
