@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { useShelf } from "../hooks/useShelf";
 import { useReading } from "../context/ReadingContext";
 import { usePageMeta } from "../hooks/usePageTitle";
@@ -10,12 +10,15 @@ import { ShelfSkeleton } from "../components/Common/Skeleton";
 import PickNextRead from "../components/Shelf/PickNextRead";
 import ShareButton from "../components/Common/ShareButton";
 import ShareShelfModal from "../components/Share/ShareShelfModal";
+import { hasSeenWelcome } from "./WelcomePage";
+import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 
 const ShelfPage = () => {
   const { username } = useParams();
   const { owner, isMine, items, collections, status } = useShelf(username);
   const { updateEntry } = useReading();
+  const { user } = useAuth();
   const [sharing, setSharing] = useState(false);
   const ownerName = owner?.display_name || owner?.username;
 
@@ -37,6 +40,8 @@ const ShelfPage = () => {
     );
   }
   if (status === "loading") return <ShelfSkeleton />;
+  // New readers with an empty shelf get the guided intro first
+  if (isMine && items.length === 0 && user && !hasSeenWelcome(user.id)) return <Navigate to="/welcome" replace />;
 
   const year = new Date().getFullYear();
   const undated = items.filter(({ entry }) => entry.status === "read" && !entry.finished_at);
