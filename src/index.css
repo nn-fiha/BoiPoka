@@ -23,15 +23,25 @@ body {
   @apply bg-paper text-ink font-poppins antialiased transition-colors duration-200;
 }
 
-/* Wooden plank the books stand on */
+/* Wooden plank the spines stand on: a top surface in perspective and a lit front edge */
+.shelf-plank-top {
+  clip-path: polygon(1.5% 0, 98.5% 0, 100% 100%, 0 100%);
+  background:
+    repeating-linear-gradient(180deg, transparent 0 3px, rgba(60, 30, 10, 0.12) 3px 4px),
+    linear-gradient(180deg, #8f6238, #b07d4c);
+}
+
 .shelf-plank {
-  background: linear-gradient(180deg, #a9774a 0%, #8a5a33 45%, #5e3b1f 100%);
-  box-shadow: 0 10px 14px -6px rgba(60, 35, 15, 0.45);
+  background: linear-gradient(180deg, #9a6b3f 0%, #7d5230 55%, #5e3b1f 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 170, 0.45),
+    0 14px 18px -8px rgba(60, 35, 15, 0.45);
 }
 
 .dark .shelf-plank {
-  background: linear-gradient(180deg, #8a5a33 0%, #6b4426 45%, #3f2714 100%);
-  box-shadow: 0 10px 18px -6px rgba(0, 0, 0, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 170, 0.35),
+    0 14px 20px -8px rgba(0, 0, 0, 0.75);
 }
 
 .spine-title {
@@ -62,31 +72,68 @@ body {
   background: linear-gradient(180deg, rgba(255, 236, 205, 0.12), rgba(255, 236, 205, 0));
 }
 
-/* Oat back board and ledge the covers lean on */
+/* 3D bookshelf: recessed back wall, a deep ledge and a front edge ----------- */
+/* Light mode is pale oat; dark mode is honey oak. Only the variables change. */
+:root {
+  --shelf-back-a: #f6ecd6;
+  --shelf-back-b: #ecdfc2;
+  --shelf-back-grain: rgba(150, 115, 60, 0.07);
+  --shelf-top-a: #f5ead2;
+  --shelf-top-b: #e2cfa6;
+  --shelf-top-grain: rgba(150, 115, 60, 0.08);
+  --shelf-front-a: #dcc79c;
+  --shelf-front-b: #bea476;
+  --shelf-highlight: rgba(255, 255, 255, 0.6);
+  --shelf-depth-shadow: rgba(70, 50, 20, 0.28);
+  --shelf-drop-shadow: rgba(30, 50, 38, 0.35);
+}
+
+.dark {
+  --shelf-back-a: #5c4126;
+  --shelf-back-b: #4e361f;
+  --shelf-back-grain: rgba(0, 0, 0, 0.14);
+  --shelf-top-a: #d3a36a;
+  --shelf-top-b: #b8864f;
+  --shelf-top-grain: rgba(90, 55, 20, 0.16);
+  --shelf-front-a: #9c6d3e;
+  --shelf-front-b: #74502c;
+  --shelf-highlight: rgba(255, 225, 170, 0.45);
+  --shelf-depth-shadow: rgba(0, 0, 0, 0.6);
+  --shelf-drop-shadow: rgba(0, 0, 0, 0.7);
+}
+
+/* Back wall: vertical planks, darker at the top and sides where the shelf is deepest */
 .display-board {
-  background: linear-gradient(180deg, #f8f1e2, #f0e5cc);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 56px, var(--shelf-back-grain) 56px 58px),
+    linear-gradient(180deg, var(--shelf-back-b), var(--shelf-back-a));
+  box-shadow:
+    inset 0 22px 26px -14px var(--shelf-depth-shadow),
+    inset 18px 0 22px -16px var(--shelf-depth-shadow),
+    inset -18px 0 22px -16px var(--shelf-depth-shadow);
 }
 
+/* Ledge top surface, in perspective, with grain running along it */
 .display-ledge-top {
-  background: linear-gradient(180deg, #f3e9d3, #e8d9b8);
+  clip-path: polygon(2.5% 0, 97.5% 0, 100% 100%, 0 100%);
+  background:
+    repeating-linear-gradient(180deg, transparent 0 3px, var(--shelf-top-grain) 3px 4px),
+    linear-gradient(180deg, var(--shelf-top-b), var(--shelf-top-a));
 }
 
+/* Ledge front edge: a lit top lip, darker body and a soft shadow on the wall below */
 .display-ledge-front {
-  background: linear-gradient(180deg, #e3d3b0, #c9b48a);
-  box-shadow: 0 14px 18px -8px rgba(30, 50, 38, 0.4);
+  background: linear-gradient(180deg, var(--shelf-front-a), var(--shelf-front-b));
+  box-shadow:
+    inset 0 1px 0 var(--shelf-highlight),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.12),
+    0 16px 20px -10px var(--shelf-drop-shadow);
 }
 
-.dark .display-board {
-  background: linear-gradient(180deg, #34413a, #2b362f);
-}
-
-.dark .display-ledge-top {
-  background: linear-gradient(180deg, #55625a, #46524a);
-}
-
-.dark .display-ledge-front {
-  background: linear-gradient(180deg, #3c4840, #2a332d);
-  box-shadow: 0 14px 18px -8px rgba(0, 0, 0, 0.7);
+/* Soft shadow where a book meets the ledge */
+.book-contact-shadow {
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.45), transparent);
+  filter: blur(2px);
 }
 
 /* Toast notifications: small paper cards that match the site --------------- */

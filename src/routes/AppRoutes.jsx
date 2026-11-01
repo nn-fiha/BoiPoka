@@ -11,6 +11,7 @@ import LoginPage from "../pages/LoginPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import ShelfPage from "../pages/ShelfPage";
 import StatsPage from "../pages/StatsPage";
+import SharedShelfPage from "../pages/SharedShelfPage";
 import LibraryPage from "../pages/LibraryPage";
 import BookPage from "../pages/BookPage";
 import AddBookPage from "../pages/AddBookPage";
@@ -29,6 +30,14 @@ const NotFound = () => (
   </div>
 );
 
+// Sign-in screens fill the page edge to edge, so they skip the footer
+const AUTH_PATHS = ["/login", "/reset-password"];
+
+const PageFooter = () => {
+  const { pathname } = useLocation();
+  return AUTH_PATHS.includes(pathname) ? null : <Footer />;
+};
+
 const AppRoutes = () => {
   const { profile } = useAuth();
 
@@ -36,7 +45,7 @@ const AppRoutes = () => {
     <Router>
       <div className={`min-h-screen flex flex-col ${profile ? "pb-[calc(4rem+env(safe-area-inset-bottom))] sm:pb-0" : ""}`}>
         <Header />
-        <main className="flex-1">
+        <main className="flex flex-1 flex-col">
           <PageBoundary>
             <Routes>
               <Route path="/" element={<HomePage />} />
@@ -45,6 +54,7 @@ const AppRoutes = () => {
               <Route path="/library" element={<LibraryPage />} />
               <Route path="/u/:username" element={<ShelfPage />} />
               <Route path="/u/:username/stats" element={<StatsPage />} />
+              <Route path="/s/:token" element={<SharedShelfPage />} />
               <Route path="/book/:id" element={<BookPage />} />
               <Route path="/add" element={<RequireAuth><AddBookPage /></RequireAuth>} />
               <Route path="/settings" element={<RequireAuth><SettingsPage /></RequireAuth>} />
@@ -52,7 +62,7 @@ const AppRoutes = () => {
             </Routes>
           </PageBoundary>
         </main>
-        <Footer />
+        <PageFooter />
         <MobileNav />
       </div>
     </Router>

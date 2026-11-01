@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useShelf } from "../hooks/useShelf";
 import { useReading } from "../context/ReadingContext";
@@ -9,12 +9,14 @@ import GoalCard from "../components/Stats/GoalCard";
 import { ShelfSkeleton } from "../components/Common/Skeleton";
 import PickNextRead from "../components/Shelf/PickNextRead";
 import ShareButton from "../components/Common/ShareButton";
+import ShareShelfModal from "../components/Share/ShareShelfModal";
 import { toast } from "react-toastify";
 
 const ShelfPage = () => {
   const { username } = useParams();
   const { owner, isMine, items, collections, status } = useShelf(username);
   const { updateEntry } = useReading();
+  const [sharing, setSharing] = useState(false);
   const ownerName = owner?.display_name || owner?.username;
 
   usePageTitle(owner ? (isMine ? "My bookshelf" : `${ownerName}'s bookshelf`) : null);
@@ -48,11 +50,20 @@ const ShelfPage = () => {
           </p>
         </div>
         <div className="flex gap-2">
-          <ShareButton
-            title={isMine ? "My bookshelf on BoiPoka" : `${ownerName}'s bookshelf`}
-            text={`${ownerName}'s bookshelf on BoiPoka`}
-            className="rounded-full border border-line bg-card px-4 py-2.5 font-medium hover:border-terra hover:text-terra"
-          />
+          {isMine ? (
+            <button
+              onClick={() => setSharing(true)}
+              className="rounded-full border border-line bg-card px-4 py-2.5 font-medium hover:border-terra hover:text-terra"
+            >
+              <i className="bx bx-share-alt align-middle"></i> Share
+            </button>
+          ) : (
+            <ShareButton
+              title={`${ownerName}'s bookshelf`}
+              text={`${ownerName}'s bookshelf on BoiPoka`}
+              className="rounded-full border border-line bg-card px-4 py-2.5 font-medium hover:border-terra hover:text-terra"
+            />
+          )}
           <Link
             to={`/u/${owner.username}/stats`}
             className="rounded-full border border-line bg-card px-5 py-2.5 font-medium hover:border-terra hover:text-terra"
@@ -66,6 +77,8 @@ const ShelfPage = () => {
           )}
         </div>
       </section>
+
+      {isMine && <ShareShelfModal open={sharing} onClose={() => setSharing(false)} />}
 
       <BookshelfView
         items={items}

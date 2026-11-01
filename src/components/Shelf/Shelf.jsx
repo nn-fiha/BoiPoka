@@ -20,7 +20,8 @@ const Shelf = ({ label, items }) => {
             <BookSpine key={book.id} book={book} entry={entry} />
           ))}
         </div>
-        <div className="shelf-plank h-4 rounded-sm" />
+        <div className="shelf-plank-top -mt-1.5 h-3" />
+        <div className="shelf-plank h-4 rounded-b-sm" />
       </div>
     </section>
   );
