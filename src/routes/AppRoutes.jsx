@@ -12,6 +12,7 @@ import ResetPasswordPage from "../pages/ResetPasswordPage";
 import ShelfPage from "../pages/ShelfPage";
 import StatsPage from "../pages/StatsPage";
 import SharedShelfPage from "../pages/SharedShelfPage";
+import WelcomePage from "../pages/WelcomePage";
 import LibraryPage from "../pages/LibraryPage";
 import BookPage from "../pages/BookPage";
 import AddBookPage from "../pages/AddBookPage";
@@ -31,7 +32,7 @@ const NotFound = () => (
 );
 
 // Sign-in screens fill the page edge to edge, so they skip the footer
-const AUTH_PATHS = ["/login", "/reset-password"];
+const AUTH_PATHS = ["/login", "/reset-password", "/welcome"];
 
 const PageFooter = () => {
   const { pathname } = useLocation();
@@ -59,6 +60,7 @@ const AppRoutes = () => {
               <Route path="/book/:id" element={<BookPage />} />
               <Route path="/add" element={<RequireAuth><AddBookPage /></RequireAuth>} />
               <Route path="/settings" element={<RequireAuth><SettingsPage /></RequireAuth>} />
+              <Route path="/welcome" element={<RequireAuth><WelcomePage /></RequireAuth>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </PageBoundary>

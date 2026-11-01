@@ -98,6 +98,22 @@ export const ReadingProvider = ({ children }) => {
     return data;
   };
 
+  // Shelve several books in one request (used by the welcome flow)
+  const addManyToShelf = async (books, status = "read") => {
+    const fresh = books.filter((book) => !entriesRef.current[book.id]);
+    if (fresh.length === 0) return [];
+    const { data, error } = await supabase
+      .from("shelf_entries")
+      .insert(fresh.map((book) => ({ book_id: book.id, status })))
+      .select("*, book:books(*)");
+    if (error) {
+      toast.error(error.message);
+      return [];
+    }
+    setEntries((current) => ({ ...current, ...Object.fromEntries(data.map((row) => [row.book_id, row])) }));
+    return data;
+  };
+
   const removeFromShelf = async (bookId) => {
     const entry = entries[bookId];
     if (!entry) return;
@@ -158,6 +174,7 @@ export const ReadingProvider = ({ children }) => {
         getEntry,
         updateEntry,
         addToShelf,
+        addManyToShelf,
         removeFromShelf,
         syncBook,
         reload,
