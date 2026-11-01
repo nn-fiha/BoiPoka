@@ -54,10 +54,6 @@ export const AuthProvider = ({ children }) => {
   const sendPasswordReset = (email) =>
     supabase.auth.resetPasswordForEmail(email, { redirectTo: redirectTo("/reset-password") });
 
-  // Passwordless sign-in for existing accounts
-  const sendMagicLink = (email) =>
-    supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: redirectTo() } });
-
   const resendConfirmation = (email) =>
     supabase.auth.resend({ type: "signup", email, options: { emailRedirectTo: redirectTo() } });
 
@@ -83,7 +79,6 @@ export const AuthProvider = ({ children }) => {
         signIn,
         signOut,
         sendPasswordReset,
-        sendMagicLink,
         resendConfirmation,
         signInWithGoogle,
         updatePassword,
