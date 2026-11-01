@@ -34,6 +34,8 @@ const BookshelfView = ({
   const [collectionId, setCollectionId] = useState("all");
   const [tag, setTag] = useState(null);
   const [groupBy, setGroupBy] = useState("genre");
+  // Shelves in A–Z order, or the biggest shelves first
+  const [order, setOrder] = useState("name");
   const [view, setView] = useState(readView);
   // Phones tuck view, sort, shelves and tags into a panel that opens under the search bar
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -67,8 +69,9 @@ const BookshelfView = ({
       const key = GROUPINGS[groupBy](item.book);
       (groups[key] = groups[key] || []).push(item);
     });
-    return Object.entries(groups).sort(([a], [b]) => a.localeCompare(b));
-  }, [visibleItems, groupBy]);
+    const byName = ([a], [b]) => a.localeCompare(b);
+    return Object.entries(groups).sort(order === "count" ? (a, b) => b[1].length - a[1].length || byName(a, b) : byName);
+  }, [visibleItems, groupBy, order]);
 
   const readItems = items.filter(({ entry }) => entry.status === "read");
   const statusCounts = items.reduce(
@@ -78,7 +81,7 @@ const BookshelfView = ({
   const pagesRead = readItems.reduce((sum, { book }) => sum + (book.pages || 0), 0);
   const authors = new Set(readItems.map(({ book }) => book.author)).size;
 
-  const activeFilters = (collection ? 1 : 0) + (tag ? 1 : 0) + (groupBy !== "genre" ? 1 : 0);
+  const activeFilters = (collection ? 1 : 0) + (tag ? 1 : 0) + (groupBy !== "genre" ? 1 : 0) + (order !== "name" ? 1 : 0);
 
   const viewToggle = (
     <div className="flex h-11 items-center rounded-full border border-line bg-card p-1 text-sm" role="group" aria-label="Shelf style">
@@ -104,13 +107,19 @@ const BookshelfView = ({
     <div className="relative">
       <i className="bx bx-sort-alt-2 pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/50"></i>
       <select
-        value={groupBy}
-        onChange={(e) => setGroupBy(e.target.value)}
+        value={`${groupBy}:${order}`}
+        onChange={(e) => {
+          const [nextGroup, nextOrder] = e.target.value.split(":");
+          setGroupBy(nextGroup);
+          setOrder(nextOrder);
+        }}
         aria-label="Shelve by"
         className="h-11 appearance-none rounded-full border border-line bg-card pl-9 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-terra/40"
       >
-        <option value="genre">By genre</option>
-        <option value="author">By author</option>
+        <option value="genre:name">By genre · A–Z</option>
+        <option value="genre:count">By genre · most books</option>
+        <option value="author:name">By author · A–Z</option>
+        <option value="author:count">By author · most books</option>
       </select>
       <i className="bx bx-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ink/50"></i>
     </div>
@@ -268,6 +277,26 @@ const BookshelfView = ({
                       aria-pressed={groupBy === key}
                       className={`h-10 flex-1 rounded-full border text-sm transition ${
                         groupBy === key ? "border-ink bg-ink text-paper" : "border-line"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </section>
+              <section>
+                <h3 className="mb-2 text-[11px] font-medium uppercase tracking-wide text-ink/60">Order</h3>
+                <div className="flex gap-2">
+                  {[
+                    ["name", "A–Z"],
+                    ["count", "Most books"],
+                  ].map(([key, label]) => (
+                    <button
+                      key={key}
+                      onClick={() => setOrder(key)}
+                      aria-pressed={order === key}
+                      className={`h-10 flex-1 rounded-full border text-sm transition ${
+                        order === key ? "border-ink bg-ink text-paper" : "border-line"
                       }`}
                     >
                       {label}
