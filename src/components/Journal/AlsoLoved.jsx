@@ -39,7 +39,7 @@ const AlsoLoved = ({ book }) => {
   if (!result || result.items.length === 0) return null;
 
   return (
-    <section className="mt-16 border-t border-line pt-10">
+    <section className="mt-10 border-t border-line pt-8 sm:mt-16 sm:pt-10">
       <h2 className="font-serif text-2xl font-bold">{HEADINGS[result.reason]}</h2>
       <ul className="mt-6 flex gap-4 overflow-x-auto pb-2 sm:gap-6">
         {result.items.map(({ book: other, readers }) => (

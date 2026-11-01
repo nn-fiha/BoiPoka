@@ -49,7 +49,7 @@ const StatsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
-      <Link to={`/u/${owner.username}`} className="text-sm text-ink/60 hover:text-ink">
+      <Link to={`/u/${owner.username}`} className="-my-2 inline-block py-2 text-sm text-ink/60 hover:text-ink">
         <i className="bx bx-arrow-back align-middle"></i> {isMine ? "My shelf" : `${owner.display_name || owner.username}'s shelf`}
       </Link>
 
@@ -61,7 +61,7 @@ const StatsPage = () => {
               key={y}
               onClick={() => setYear(y)}
               aria-pressed={year === y}
-              className={`rounded-full px-3.5 py-1 text-sm tabular-nums transition ${
+              className={`min-h-[2.25rem] rounded-full px-3.5 py-1.5 text-sm tabular-nums transition ${
                 year === y ? "bg-terra text-cream" : "text-ink/70 hover:text-ink"
               }`}
             >
