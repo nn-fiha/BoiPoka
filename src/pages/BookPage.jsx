@@ -12,6 +12,24 @@ import BookCover from "../components/Shelf/BookCover";
 import BookDetailsForm from "../components/Journal/BookDetailsForm";
 import { BookSkeleton } from "../components/Common/Skeleton";
 import { usePageMeta } from "../hooks/usePageTitle";
+import { parseFreeRead, readProgress } from "../lib/freeRead";
+
+// Opens the in-app reader for public-domain books, or picks up where you stopped
+const ReadFreeButton = ({ book }) => {
+  const source = parseFreeRead(book.free_read);
+  if (!source) return null;
+  const progress = readProgress(book.id);
+  return (
+    <Link
+      to={`/read/${book.id}`}
+      className="mt-4 inline-flex items-center gap-2 rounded-full bg-sage px-5 py-2.5 text-sm font-medium text-white transition hover:bg-sage-dark"
+    >
+      <i className="bx bx-book-reader text-lg"></i>
+      {progress ? `Continue reading · ${progress.chapter + 1} of ${progress.chapters}` : "Read free"}
+      <span className="sr-only"> (public-domain text from {source.credit})</span>
+    </Link>
+  );
+};
 
 const BookPage = () => {
   const { id } = useParams();
@@ -100,6 +118,7 @@ const BookPage = () => {
           <p className="mt-2 text-xs text-ink/50">
             {[book.genre, book.pages && `${book.pages} pages`].filter(Boolean).join(" · ")}
           </p>
+          <ReadFreeButton book={book} />
         </div>
       </div>
 
@@ -145,6 +164,9 @@ const BookPage = () => {
         <article>
           <h1 className="hidden md:block font-bangla text-4xl font-semibold leading-tight">{book.title}</h1>
           <p className="hidden md:block mt-1 font-bangla text-xl text-ink/70">{book.author}</p>
+          <div className="hidden md:block">
+            <ReadFreeButton book={book} />
+          </div>
 
           {entry ? (
             <JournalEditor

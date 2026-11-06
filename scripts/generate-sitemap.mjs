@@ -50,6 +50,7 @@ try {
 const urls = [
   { path: "/", priority: "1.0" },
   { path: "/library", priority: "0.9" },
+  { path: "/free", priority: "0.8" },
   { path: "/login", priority: "0.5" },
   ...shelves.map((profile) => ({ path: `/u/${profile.username}`, lastmod: day(profile.created_at), priority: "0.7" })),
   ...books.map((book) => ({ path: `/book/${book.id}`, lastmod: day(book.created_at), priority: "0.6" })),

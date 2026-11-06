@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { fetchCatalog } from "../lib/api";
 import { useReading } from "../context/ReadingContext";
 import BookshelfView from "../components/Shelf/BookshelfView";
@@ -21,6 +22,7 @@ const LibraryPage = () => {
 
   if (!books) return <ShelfSkeleton />;
 
+  const freeCount = books.filter((book) => book.free_read).length;
   // Books on your own shelf show their status and rating
   const items = books.map((book) => ({ book, entry: getEntry(book.id) || { status: "read", rating: 0 } }));
 
@@ -31,6 +33,20 @@ const LibraryPage = () => {
         <p className="mt-2 font-bangla text-base sm:text-lg text-ink/70">
           {books.length} Bangla and English books — open one to see what readers felt, or put it on your shelf.
         </p>
+        {freeCount > 0 && (
+          <Link
+            to="/free"
+            className="mt-5 flex items-center gap-3 rounded-2xl border border-sage/40 bg-sage/10 px-4 py-3 transition hover:bg-sage/15 sm:inline-flex sm:pr-6"
+          >
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sage text-white">
+              <i className="bx bx-book-reader text-xl"></i>
+            </span>
+            <span>
+              <span className="block font-medium">{freeCount} classics you can read free</span>
+              <span className="block font-bangla text-sm text-ink/60">Tagore, Bankim, Sarat, Austen, Dickens… right here on BoiPoka →</span>
+            </span>
+          </Link>
+        )}
       </section>
       <BookshelfView
         items={items}

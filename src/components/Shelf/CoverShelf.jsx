@@ -26,6 +26,11 @@ const FaceOutBook = ({ book, entry }) => {
         />
         {/* Light catching the left edge, like a real paperback */}
         <span className="pointer-events-none absolute inset-y-0 left-0 w-2 rounded-l-[3px] bg-gradient-to-r from-black/25 to-transparent" />
+        {book.free_read && (
+          <span className="absolute -left-1.5 top-2 rounded-r-full bg-sage px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white shadow">
+            <i className="bx bx-book-reader align-[-1px]"></i> Free
+          </span>
+        )}
         {entry.status !== "read" && (
           <span
             className={`absolute -top-2 -right-2 rounded-full px-2 py-0.5 text-[10px] font-semibold text-white shadow ${STATUSES[entry.status].color}`}

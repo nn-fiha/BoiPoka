@@ -49,6 +49,10 @@ function Header() {
             <i className="bx bx-book-open align-middle text-xl"></i>
             <span className="hidden sm:inline ml-1">Library</span>
           </NavLink>
+          <NavLink to="/free" aria-label="Read free" className={(state) => `${navClass(state)} ${TAP}`}>
+            <i className="bx bx-book-reader align-middle text-xl"></i>
+            <span className="hidden lg:inline ml-1">Read free</span>
+          </NavLink>
           {profile ? (
             <>
               <NavLink to={`/u/${profile.username}`} className={(state) => `${navClass(state)} hidden sm:inline`}>
@@ -66,8 +70,10 @@ function Header() {
               </button>
             </>
           ) : (
-            <NavLink to="/login" className={(state) => `${navClass(state)} ${TAP} whitespace-nowrap`}>
-              Sign in <i className="bx bx-log-in align-middle text-xl"></i>
+            <NavLink to="/login" aria-label="Sign in" className={(state) => `${navClass(state)} ${TAP} whitespace-nowrap`}>
+              {/* Narrow phones show just the icon so the header still fits */}
+              <span className="hidden min-[400px]:inline">Sign in </span>
+              <i className="bx bx-log-in align-middle text-xl"></i>
             </NavLink>
           )}
         </nav>
