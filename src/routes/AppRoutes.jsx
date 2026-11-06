@@ -42,13 +42,28 @@ const PageFooter = () => {
   return AUTH_PATHS.includes(pathname) ? null : <Footer />;
 };
 
-const AppRoutes = () => {
+// The book reader takes the whole screen, without the site header, footer or tab bar
+const isReader = (pathname) => pathname.startsWith("/read/");
+
+const Shell = ({ children }) => {
   const { profile } = useAuth();
+  const { pathname } = useLocation();
+  const reading = isReader(pathname);
 
   return (
+    <div className={`min-h-screen flex flex-col ${profile && !reading ? "pb-[calc(4rem+env(safe-area-inset-bottom))] sm:pb-0" : ""}`}>
+      {!reading && <Header />}
+      {children}
+      {!reading && <PageFooter />}
+      {!reading && <MobileNav />}
+    </div>
+  );
+};
+
+const AppRoutes = () => {
+  return (
     <Router>
-      <div className={`min-h-screen flex flex-col ${profile ? "pb-[calc(4rem+env(safe-area-inset-bottom))] sm:pb-0" : ""}`}>
-        <Header />
+      <Shell>
         {/* Pages fill the width exactly; without w-full a centred page would grow to fit its widest shelf */}
         <main className="flex flex-1 flex-col [&>*]:w-full [&>*]:min-w-0">
           <PageBoundary>
@@ -71,9 +86,7 @@ const AppRoutes = () => {
             </Routes>
           </PageBoundary>
         </main>
-        <PageFooter />
-        <MobileNav />
-      </div>
+      </Shell>
     </Router>
   );
 };
