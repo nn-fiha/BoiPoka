@@ -33,9 +33,14 @@ const HomePage = () => {
             Sign in
           </Link>
         </div>
-        <Link to="/library" className="mt-5 inline-block py-2 text-sm text-ink/60 transition hover:text-terra">
-          Browse the library without an account →
-        </Link>
+        <div className="mt-5 flex flex-col items-start gap-1 sm:flex-row sm:gap-6">
+          <Link to="/library" className="py-2 text-sm text-ink/60 transition hover:text-terra">
+            Browse the library without an account →
+          </Link>
+          <Link to="/free" className="py-2 text-sm text-ink/60 transition hover:text-terra">
+            <i className="bx bx-book-reader align-middle"></i> Read classics free →
+          </Link>
+        </div>
       </section>
 
       {readers.length > 0 && (

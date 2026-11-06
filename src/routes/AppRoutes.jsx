@@ -12,6 +12,8 @@ import ResetPasswordPage from "../pages/ResetPasswordPage";
 import ShelfPage from "../pages/ShelfPage";
 import StatsPage from "../pages/StatsPage";
 import WrappedPage from "../pages/WrappedPage";
+import ReaderPage from "../pages/ReaderPage";
+import FreeReadingPage from "../pages/FreeReadingPage";
 import SharedShelfPage from "../pages/SharedShelfPage";
 import WelcomePage from "../pages/WelcomePage";
 import LibraryPage from "../pages/LibraryPage";
@@ -55,11 +57,13 @@ const AppRoutes = () => {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/library" element={<LibraryPage />} />
+              <Route path="/free" element={<FreeReadingPage />} />
               <Route path="/u/:username" element={<ShelfPage />} />
               <Route path="/u/:username/stats" element={<StatsPage />} />
               <Route path="/u/:username/wrapped" element={<WrappedPage />} />
               <Route path="/s/:token" element={<SharedShelfPage />} />
               <Route path="/book/:id" element={<BookPage />} />
+              <Route path="/read/:id" element={<ReaderPage />} />
               <Route path="/add" element={<RequireAuth><AddBookPage /></RequireAuth>} />
               <Route path="/settings" element={<RequireAuth><SettingsPage /></RequireAuth>} />
               <Route path="/welcome" element={<RequireAuth><WelcomePage /></RequireAuth>} />

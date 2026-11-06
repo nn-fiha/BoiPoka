@@ -173,3 +173,62 @@ body {
     padding: 0;
   }
 }
+
+/* Book text in the reader ---------------------------------------------- */
+/* Printed-book paragraphs: justified, first line indented */
+.reader-text p {
+  margin-bottom: 0.9em;
+  text-indent: 2em;
+  hyphens: auto;
+}
+/* Phones are too narrow for justified lines; they'd open big gaps between words */
+@media (min-width: 640px) {
+  .reader-text p {
+    text-align: justify;
+  }
+}
+.reader-bangla {
+  font-family: "Tiro Bangla", "Hind Siliguri", serif;
+}
+.reader-text h2,
+.reader-text h3,
+.reader-text h4 {
+  margin: 1.6em 0 0.8em;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+}
+.reader-text h2 {
+  font-size: 1.5em;
+}
+.reader-text h3 {
+  font-size: 1.25em;
+}
+.reader-text blockquote {
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 3px solid rgb(var(--color-line));
+  font-style: italic;
+}
+.reader-text ul,
+.reader-text ol {
+  margin: 0 0 1em 1.5em;
+  list-style: revert;
+}
+.reader-text hr {
+  margin: 2em auto;
+  width: 30%;
+  border-color: rgb(var(--color-line));
+}
+.reader-text pre {
+  white-space: pre-wrap;
+  font-family: inherit;
+}
+/* Centred lines are titles and chapter numbers, so they stand out like "॥ ১ ॥" in a printed book */
+.reader-text p.center {
+  margin: 1.2em 0;
+  text-align: center;
+  text-indent: 0;
+  font-size: 1.15em;
+  font-weight: 600;
+}
